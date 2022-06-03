@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MainLayout from '../../layout/MainLayout';
-import AddTagContainer from '../../components/container/addTag/AddTagContainer';
+import AddTagContainer from '../../components/container/addTag/addTagContainer';
 import HeadDefault from '../../layout/head/HeadDefault';
 
 class AddTag extends React.Component {
