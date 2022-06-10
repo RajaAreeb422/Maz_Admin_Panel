@@ -13,7 +13,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 //import { AddAPhoto } from '@material-ui/icons'
 //import 'react-toastify/dist/ReactToastify.scss';
 //import { toast, ToastContainer } from 'react-nextjs-toast'
-
+import { MultiSelect } from "react-multi-select-component";
 // toast.configure();
 
 const AddProductPage = memo(props => {
@@ -68,6 +68,14 @@ const AddProductPage = memo(props => {
   const toggle = () => setModal(!modal);
   const Imgtoggle = () => setImgModal(!Imgmodal);
   const succtoggle = () => setSuccModal(!succmodal);
+  const options = [
+    { label: "Grapes 🍇", value: "grapes" },
+    { label: "Mango 🥭", value: "mango" },
+    { label: "Strawberry 🍓", value: "strawberry", disabled: true },
+  ];
+  
+  const [selected1, setSelected1] = useState([]);
+ 
   useEffect(() => {
     let mounted = true;
     
@@ -86,7 +94,19 @@ const AddProductPage = memo(props => {
 
           axios
           .get('https://mazglobal.co.uk/maz-api/vehicles')
-          .then(res => setVeh(res.data.data))
+          .then(res => {
+            let list=[]
+            res.data.data.map(vh=>{
+              list.push({
+                id:vh.id,
+                label:vh.name,
+                value:vh.id
+              })
+            })
+            setVeh(list)
+            
+          }
+            )
           .catch(err => console.log(err));
       }
     // });
@@ -374,7 +394,7 @@ const AddProductPage = memo(props => {
           
           <div className="newaddproItem">
               <label for="exampleFormControlSelect1">Vehicle</label>
-              <select
+              {/* <select
                 className="newaddproSelect"
                 id="veh"
                 //required
@@ -382,13 +402,26 @@ const AddProductPage = memo(props => {
                 
                 onChange={handleChange(name)}
               >
-                <option value={state.vehicle_id}>Select Vehicle</option>
+                  
+               <option value={state.vehicle_id}>Select Vehicle</option>
                 {veh.map(p => {
                 
                     return <option value={p.id}>{p.name}</option>;
-                })}
-              </select>
+                })} 
+              </select> */}
+
+<MultiSelect
+             className="newaddproSelect"
+             id="veh"
+                //required
+                name="vehicle_id"
+        options={veh}
+        value={selected1}
+        onChange={setSelected1}
+        labelledBy="Select"
+      />
             </div>
+           
        
           <div className="newaddproflexItem">
             <div className="flexdiv">
