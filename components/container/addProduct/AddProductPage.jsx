@@ -26,7 +26,7 @@ const AddProductPage = memo(props => {
     oem_no:'',
     application:'',
     package:'',
-    vehicle_id:null,
+   
     product_description: '',
     supplier_id: null,
     cross_ref:'',
@@ -62,7 +62,7 @@ const AddProductPage = memo(props => {
     oem_no,
     application,
     packag,
-    vehicle_id,
+    
     cross_ref
   } = state;
   const toggle = () => setModal(!modal);
@@ -148,6 +148,7 @@ const AddProductPage = memo(props => {
       state.combinations = null;
       console.log('vvvvv', variantss);
     console.log('product issss', state);
+    console.log('selected issss', selected1);
     }
    
     if(state.name=='' || state.part_no==''||state.stock_quantity==null||state.regular_price==null||state.product_description==''||
