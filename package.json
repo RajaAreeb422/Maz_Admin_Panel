@@ -32,6 +32,7 @@
     "@zeit/next-sass": "^1.0.1",
     "availity-reactstrap-validation": "^2.7.1",
     "axios": "^0.21.4",
+    "babel-plugin-react-transform": "^3.0.0",
     "bootstrap": "^4.6.1",
     "chart": "^0.1.2",
     "chart.js": "^3.7.0",
@@ -72,8 +73,9 @@
   "devDependencies": {
     "@types/autoprefixer": "^9.0.0",
     "@types/cssnano": "^5.1.0",
-    "autoprefixer": "^9.8.8",
+    "autoprefixer": "9",
     "cssnano": "^5.1.11",
+    "postcss": "^8.4.14",
     "prettier": "^1.19.1",
     "redux-devtools-extension": "^2.13.8"
   }
