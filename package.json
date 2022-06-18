@@ -35,7 +35,6 @@
     "bootstrap": "^4.6.1",
     "chart": "^0.1.2",
     "chart.js": "^3.7.0",
-    "cssnano": "^4.1.10",
     "dateformat": "^5.0.2",
     "filereader": "^0.10.3",
     "isomorphic-unfetch": "^3.1.0",
@@ -43,12 +42,10 @@
     "material-ui-search-bar": "^1.0.0",
     "next": "9.3.2",
     "next-redux-wrapper": "^5.0.0",
-    "node-fetch": "^3.0.0",
-    "node-sass": "^7.0.1",
+    "node-fetch": "^3.2.6",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-chartjs-2": "^4.0.1",
-    "react-data-grid": "^7.0.0-beta.7",
     "react-datepicker": "^4.5.0",
     "react-dom": "16.12.0",
     "react-fetch-hook": "^1.8.5",
@@ -71,6 +68,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/autoprefixer": "^9.0.0",
+    "@types/cssnano": "^5.1.0",
+    "autoprefixer": "^9.8.8",
+    "cssnano": "^5.1.11",
     "prettier": "^1.19.1",
     "redux-devtools-extension": "^2.13.8"
   }
