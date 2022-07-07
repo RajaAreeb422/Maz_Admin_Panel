@@ -32,7 +32,7 @@ const EditShip = memo(props => {
   const { id } = router.query;
 
   useEffect(() => {
-    axios.get(`http://95.111.240.143:8080/ecom-api/shipping/${id}`)
+    axios.get(`https://api.mazglobal.co.uk/maz-api/shipping/${id}`)
     .then(res=>{
         setState(res.data.data)
         setPrice(res.data.data.price)
@@ -55,7 +55,7 @@ const EditShip = memo(props => {
     
     axios
       .put(
-        `http://95.111.240.143:8080/ecom-api/shipping/${id}`,
+        `https://api.mazglobal.co.uk/maz-api/shipping/${id}`,
         put,config,
 
         { headers: { 'content-type': 'application/json' } },

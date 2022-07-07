@@ -82,18 +82,18 @@ const AddProductPage = memo(props => {
     // axios.get(`http://localhost:8080/maz-api/products`).then(response => {
        if (mounted) {
         axios
-          .get('https://mazglobal.co.uk/maz-api/categories')
+          .get('https://api.mazglobal.co.uk/maz-api/categories')
           .then(res => {
             console.log("categories are",res.data)
             setParent(res.data.data)})
           .catch(err => console.log(err));
         axios
-          .get('https://mazglobal.co.uk/maz-api/suppliers')
+          .get('https://api.mazglobal.co.uk/maz-api/suppliers')
           .then(res => setSupplier(res.data.data))
           .catch(err => console.log(err));
 
           axios
-          .get('https://mazglobal.co.uk/maz-api/vehicles')
+          .get('https://api.mazglobal.co.uk/maz-api/vehicles')
           .then(res => {
             let list=[]
             res.data.data.map(vh=>{
@@ -163,7 +163,7 @@ const AddProductPage = memo(props => {
       console.log('state issss', state);
     axios
     .post(
-      `https://mazglobal.co.uk/maz-api/products`,
+      `https://api.mazglobal.co.uk/maz-api/products`,
       state,
       config,
 
@@ -181,7 +181,7 @@ const AddProductPage = memo(props => {
         
         axios
           .post(
-            `https://mazglobal.co.uk/maz-api/products/uploadProductImages/${response.data.InsertedId}`,
+            `https://api.mazglobal.co.uk/maz-api/products/uploadProductImages/${response.data.InsertedId}`,
             formData,
             config,
             {},
@@ -508,7 +508,7 @@ const AddProductPage = memo(props => {
       </div>
 
       <span>
-        <Variants variantCall={handleVariant} />
+        {/* <Variants variantCall={handleVariant} /> */}
       </span>
       <button type="submit" onClick={submitHandler} className="newaddproButton">
         Save

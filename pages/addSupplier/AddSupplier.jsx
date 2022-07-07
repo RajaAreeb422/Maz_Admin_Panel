@@ -50,7 +50,7 @@ const AddSupplier = memo(props => {
     console.log('state',state)
     axios
       .post(
-        `https://mazglobal.co.uk/maz-api/suppliers`,
+        `https://api.mazglobal.co.uk/maz-api/suppliers`,
         state,config,
 
         { headers: { 'content-type': 'application/json' } },

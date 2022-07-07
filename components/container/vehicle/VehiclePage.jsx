@@ -45,7 +45,7 @@ const VehiclePage = memo(props => {
     };
     //getting categories from database..
     axios
-      .get('http://localhost:8080/maz-api/vehicles', config)
+      .get('https://api.mazglobal.co.uk/maz-api/vehicles', config)
       .then(response => {
         console.log(response.data);
         if (mounted) {
@@ -103,17 +103,17 @@ const VehiclePage = memo(props => {
     };
     console.log('moveeeeeeeeeeeeeeeee', id);
     axios
-    .delete(`http://95.111.240.143:8080/ecom-api/categories/${id}`)
+    .delete(`https://api.mazglobal.co.uk/maz-api/categories/${id}`)
       .then(response => {
        
         toggle();
         axios
-          .get(`http://95.111.240.143:8080/ecom-api/categories`, config)
+          .get(`https://api.mazglobal.co.uk/maz-api/categories`, config)
           .then(res => {
             var i=1
             res.data.data.map(exam => {
               exam['_id'] = i++;
-              let pp = 'http://95.111.240.143/ecom-api/' + exam.path;
+              let pp = 'https://api.mazglobal.co.uk/' + exam.path;
               pp=pp.toString();
               exam['path']=pp
               console.log("ppp",pp)
@@ -188,7 +188,7 @@ const VehiclePage = memo(props => {
     })
     setSactive(newlist)
     axios
-      .put(`http://95.111.240.143:8080/ecom-api/categories/${id}`, {
+      .put(`https://api.mazglobal.co.uk/maz-api/categories/${id}`, {
         status: status == false ? 0 : 1,
       })
       .then(response => {

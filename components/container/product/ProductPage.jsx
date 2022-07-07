@@ -29,7 +29,7 @@ const ProductPage = memo(props => {
     let mounted = true;
     console.log('in useeffec');
     //getting product list from database
-    axios.get('https://mazglobal.co.uk/maz-api//products').then(response => {
+    axios.get('https://api.mazglobal.co.uk/maz-api/products').then(response => {
       if (mounted) {
         var i = 1;
         const list = [...path];
@@ -39,7 +39,7 @@ const ProductPage = memo(props => {
           //get the category name from category id
           axios
             .get(
-              `https://mazglobal.co.uk/maz-api/categories/${exam.category_id}`,
+              `https://api.mazglobal.co.uk/maz-api/categories/${exam.category_id}`,
             )
             .then(res => {
               console.log('category name', res.data.data.name);
@@ -51,7 +51,7 @@ const ProductPage = memo(props => {
             //because the image path coming from backend is like "../http://95.111.240.143" and so on. so to cut out the first two dots
             // path.substring(2) fucntion is used
            
-            let s = 'https://mazglobal.co.uk/maz-api/' + exam.path;
+            let s = 'https://api.mazglobal.co.uk/' + exam.path;
             list.push(s);
             exam.path = s;
           } else {
@@ -77,7 +77,7 @@ const ProductPage = memo(props => {
     };
     console.log('id', id);
     axios
-      .delete(`https://mazglobal.co.uk/maz-api/products/${id}`, config)
+      .delete(`https://api.mazglobal.co.uk/maz-api/products/${id}`, config)
       .then(res => {
         console.log(res.data.success);
         setData(data.filter(item => item.id !== id));

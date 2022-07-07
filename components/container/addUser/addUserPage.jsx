@@ -50,7 +50,7 @@ const AddUserPage = memo(props => {
     console.log(state);
     axios
       .post(
-        `https://mazglobal.co.uk/maz-api/users/adminSignUp`,
+        `https://api.mazglobal.co.uk/maz-api/users/adminSignUp`,
         state,
 
         { headers: { 'content-type': 'application/json' } },

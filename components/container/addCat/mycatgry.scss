@@ -2,7 +2,7 @@
     flex: 4;
     margin-left: 30px;
     height:auto;
-    
+   
   }
   .myCategory {
     flex: 4;
@@ -10,6 +10,8 @@
     height:auto;
     margin-top: 50px;
     width:900px;
+    display:flex;
+    flex-direction: row;
     -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   }
@@ -27,17 +29,52 @@
   
   .myCategoryItem {
     width: 100%;
-    // display: flex;
-    // flex-direction: row;
+    display: flex;
+    flex-direction: column;
     margin-top: 10px;
+    background-color: aqua;
     margin-right: 20px;
     margin-left: 300px;
   }
   
+  .divItem{
+   // width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    
+    margin-right: 20px;
+    margin-left: 150px;
+
+  }
+  .divlabel{
+    margin-bottom: 10px;
+   
+    
+   font-size: 14px;
+   font-weight: 600;
+   color: rgb(151, 150, 150);
+  }
+  .divinput{
+    width: 300px !important;
+    height: 40px;
+    padding: 10px;
+    padding-left:2px !important;
+    border: 1px solid gray;
+    border-radius: 5px;
+  }
+  .divselect{
+    width: 300px !important;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+
+  }
   .myCategoryItem > label {
     margin-bottom: 10px;
-
-    width: 100% !important;
+     width:20px !important;
+     background-color: green;
     font-size: 14px;
     font-weight: 600;
     color: rgb(151, 150, 150);
@@ -47,6 +84,7 @@
     width: 300px !important;
     height: 40px;
     padding: 10px;
+    padding-left:2px !important;
     border: 1px solid gray;
     border-radius: 5px;
     

@@ -22,7 +22,7 @@ const Data = memo(props => {
     console.log('in useeffec');
     //get list of supplier from the datbase
     axios
-      .get('https://mazglobal.co.uk/maz-api/suppliers')
+      .get('https://api.mazglobal.co.uk/maz-api/suppliers')
       .then(response => {
         if (mounted) {
           var i = 1;
@@ -70,12 +70,12 @@ const Data = memo(props => {
     };
 
     axios
-      .delete(`https://mazglobal.co.uk/maz-api/suppliers/${id}`, config)
+      .delete(`https://api.mazglobal.co.uk/maz-api/suppliers/${id}`, config)
       .then(response => {
         console.log(response);
         toggle();
         axios
-          .get(`https://mazglobal.co.uk/maz-api/suppliers`, config)
+          .get(`https://api.mazglobal.co.uk/maz-api/suppliers`, config)
           .then(res => {
             setData(res.data.data);
           })

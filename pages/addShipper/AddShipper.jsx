@@ -43,7 +43,7 @@ const AddShipper = memo(props => {
     console.log('sss',state)
     axios
       .post(
-        `http://95.111.240.143:8080/ecom-api/shipping`,
+        `https://api.mazglobal.co.uk/maz-api/shipping`,
         state,config,
 
         { headers: { 'content-type': 'application/json' } },

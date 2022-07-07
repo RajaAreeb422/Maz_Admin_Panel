@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 //import { response } from "express";
 import './mycatgry.scss';
 import Link from 'next/link';
+//import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -38,7 +39,7 @@ const AddCatPage = memo(props => {
       },
     };
     axios
-      .get(`http://localhost:8080/maz-api/categories`, config)
+      .get(`https://api.mazglobal.co.uk/maz-api/categories`, config)
       .then(response => {
         setParent(response.data.data);
 
@@ -65,7 +66,7 @@ const AddCatPage = memo(props => {
 
     axios
       .post(
-        `https://mazglobal.co.uk/maz-api/categories`,
+        `https://api.mazglobal.co.uk/maz-api/categories`,
         state,
         config,
 
@@ -80,7 +81,7 @@ const AddCatPage = memo(props => {
 
         axios
           .post(
-            `https://mazglobal.co.uk/maz-api/categories/uploadCategoryImage/${response.data.InsertedId}`,
+            `https://api.mazglobal.co.uk/maz-api/categories/uploadCategoryImage/${response.data.InsertedId}`,
             formData,
             config,
             {},
@@ -142,16 +143,19 @@ const AddCatPage = memo(props => {
   };
 
   const PostCategory = () => (
+    <>
+       <h1 className="myCategoryTitle">New Category</h1>
     <div className="main">
       <div className="myCategory">
-        
-        <h1 className="myCategoryTitle">New Category</h1>
+        <img src='/1-sliders.png' height='320px' width='320px'/>
+     
         <form className="myCategoryForm" onSubmit={submitHandler} >
-          <div  className="myCategoryItem">
-            <label for="exampleInputName">Name</label>
+          <div className="divItem">
+            <label className="divlabel" for="exampleInputName">Name</label>
             <input
               type="text"
-              className="catlabel"
+             className="divinput"
+              
               id="name"
               placeholder="Your Category Label"
               required
@@ -160,12 +164,13 @@ const AddCatPage = memo(props => {
               onChange={handleChange(name)}
             />
           </div>
-          <div className="myCategoryItem">
-            <label for="exampleFormControlSelect1">Parent Category</label>
+          <div className="divItem">
+            <label  className="divlabel" for="exampleFormControlSelect1">Parent Category</label>
             <select
-              className="myCategorySelect"
+           //   className="myCategorySelect"
               id="parent"
               required
+              className="divselect"
               name="parent"
               value={state.parent}
               onChange={handleChange(name)}
@@ -177,10 +182,10 @@ const AddCatPage = memo(props => {
             </select>
           </div>
           {mydiv && (
-            <div className="myCategoryItem">
-              <label for="exampleFormControlSelect1">Sub Category</label>
+            <div className="divItem">
+              <label  className="divlabel" for="exampleFormControlSelect1">Sub Category</label>
               <select
-                className="myCategorySelect"
+                className="divselect"
                 id="parent"
                 
                 name="sub"
@@ -195,16 +200,17 @@ const AddCatPage = memo(props => {
             </div>
           )}
 
-          <div className="myCategoryItem">
+          <div className="divItem">
               <label
                 for="exampleInputName"
+                className="divlabel"
               >
                 Upload Image
               </label>
               <input
               
                 type="file"
-                
+                className="divinput"
                 id="name"
                 placeholder="Your Category Label"
                 required
@@ -248,6 +254,7 @@ const AddCatPage = memo(props => {
 
 
     </div>
+    </>
   );
 
   return <>{PostCategory()}</>;

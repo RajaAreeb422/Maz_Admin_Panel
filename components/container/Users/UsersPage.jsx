@@ -54,7 +54,7 @@ const UsersPage = memo(props => {
     console.log('in useeffec',config);
     //get list of registered users from database
     axios
-      .get(`https://mazglobal.co.uk/maz-api/users`)
+      .get(`https://api.mazglobal.co.uk/maz-api/users`)
       .then(response => {
         console.log('rsess', response.data);
         
@@ -88,12 +88,12 @@ const UsersPage = memo(props => {
     };
     console.log('moveeeeeeeeeeeeeeeee', id);
     axios
-      .delete(`https://mazglobal.co.uk/maz-api/users/${id}`, config)
+      .delete(`https://api.mazglobal.co.uk/maz-api/users/${id}`, config)
       .then(response => {
         console.log(response);
         toggle();
         axios
-          .get(`https://mazglobal.co.uk/maz-api/users`, config)
+          .get(`https://api.mazglobal.co.uk/maz-api/users`, config)
           .then(res => {
             setData(res.data.data);
           })

@@ -26,7 +26,7 @@ const OrderPage = memo(props => {
     console.log('in useeffec');
     //get list of orders from the database
     axios
-      .get('https://mazglobal.co.uk/maz-api/orders')
+      .get('https://api.mazglobal.co.uk/maz-api/orders')
       .then(response => {
         console.log(response.data);
        
@@ -44,7 +44,7 @@ const OrderPage = memo(props => {
             //get the user name and other details from the database using user_id from order detail.
             axios
               .get(
-                `https://mazglobal.co.uk/maz-api/users/${exam.user_id}`,
+                `https://api.mazglobal.co.uk/maz-api/users/${exam.user_id}`,
                 config,
               )
               .then(res => {
@@ -97,12 +97,12 @@ const OrderPage = memo(props => {
     };
     console.log('moveeeeeeeeeeeeeeeee', id);
     axios
-      .delete(`https://mazglobal.co.uk/maz-api/orders/${id}`, config)
+      .delete(`https://api.mazglobal.co.uk/maz-api/orders/${id}`, config)
       .then(response => {
         console.log(response);
         toggle();
         axios
-          .get(`https://mazglobal.co.uk/maz-api/orders`, config)
+          .get(`https://api.mazglobal.co.uk/maz-api/orders`, config)
           .then(res => {
             setData(res.data.data);
           })
@@ -151,11 +151,11 @@ const OrderPage = memo(props => {
       <h1>Orders</h1>
 
        {/* Link to Add Order Page */}
-      <Link href="/addOrder/AddOrder">
+      {/* <Link href="/addOrder/AddOrder">
         <a>
           <button className="AddButton">Create Order</button>
         </a>
-      </Link>
+      </Link> */}
 
      {/* Search Bar */}
       <input

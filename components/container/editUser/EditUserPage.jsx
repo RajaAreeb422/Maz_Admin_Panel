@@ -108,7 +108,7 @@ const EditUserPage = memo(props => {
     e.preventDefault();
     console.log("before",state);
    ship.type='shipping'
-    axios.post(`http://95.111.240.143:8080/ecom-api/addresses/${id}`,ship,
+    axios.post(`https://api.mazglobal.co.uk/maz-api/addresses/${id}`,ship,
   
   {headers: { 'content-type': 'application/json' }}
   )
@@ -127,7 +127,7 @@ const EditUserPage = memo(props => {
     const ship_arr = [];
     const selected_ship = [];
     axios
-      .get(`http://95.111.240.143:8080/ecom-api/addresses/${id}`, config)
+      .get(`https://api.mazglobal.co.uk/maz-api/addresses/${id}`, config)
       .then(response => {
         var i = 0;
         response.data.data.map(item => {
@@ -177,7 +177,7 @@ const EditUserPage = memo(props => {
     newship.type = 'billing';
     axios
       .put(
-        `http://95.111.240.143:8080/ecom-api/addresses/${newship.id}`,
+        `https://api.mazglobal.co.uk/maz-api/addresses/${newship.id}`,
         billput,
       )
       .then(response => {
@@ -204,7 +204,7 @@ const EditUserPage = memo(props => {
     e.preventDefault();
     console.log("before",newshipput);
     newship.type='shipping'
-    axios.put(`http://95.111.240.143:8080/ecom-api/addresses/${newship.id}`,newshipput)
+    axios.put(`https://api.mazglobal.co.uk/maz-api/addresses/${newship.id}`,newshipput)
   .then(response=>{
     console.log("rsponse",response.data)
     toast.notify(`Shipping Address Updated!`,{
@@ -223,7 +223,7 @@ const EditUserPage = memo(props => {
       const ship_arr = [];
       
       axios
-        .get(`http://95.111.240.143:8080/ecom-api/addresses/${id}`, config)
+        .get(`https://api.mazglobal.co.uk/maz-api/addresses/${id}`, config)
         .then(response => {
           var i = 0;
           response.data.data.map(item => {
@@ -365,7 +365,7 @@ const EditUserPage = memo(props => {
     };
     console.log('in Edit page useeffec');
     axios
-      .get(`http://95.111.240.143:8080/ecom-api/users/${id}`, config)
+      .get(`https://api.mazglobal.co.uk/maz-api/users/${id}`, config)
       .then(response => {
         let date=''
         const d = new Date( response.data.data.last_login);
@@ -390,7 +390,7 @@ const EditUserPage = memo(props => {
       .catch(error => console.log(error));
       var ship_arr = [];
         axios
-          .get(`http://95.111.240.143:8080/ecom-api/addresses/${id}`, config)
+          .get(`https://api.mazglobal.co.uk/maz-api/addresses/${id}`, config)
           .then(response => {
             console.log('oooooooooooo', response.data.data)
             var i=0
@@ -513,7 +513,7 @@ const EditUserPage = memo(props => {
                           placeholder={newship.user_address}
                           className="form-control"
                           name="user_address"
-                          className="gap"
+                          //className="gap"
                           required
                           value={newship.user_address}
                           onChange={handleEditChange('user_address')}

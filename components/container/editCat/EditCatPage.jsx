@@ -51,7 +51,7 @@ const EditCatPage = memo(props => {
     };
     console.log(state);
     axios
-      .put(`http://95.111.240.143:8080/ecom-api/categories/${id}`, state,config)
+      .put(`https://api.mazglobal.co.uk/maz-api/categories/${id}`, state,config)
       .then(response => {
         
          toggle()
@@ -102,7 +102,7 @@ const EditCatPage = memo(props => {
     }
     const fetchSomethingById = () => {
       axios
-        .get(`http://95.111.240.143:8080/ecom-api/categories/${id}`, config)
+        .get(`https://api.mazglobal.co.uk/maz-api/categories/${id}`, config)
         .then(response => {
           console.log(id);
           console.log('data', response.data.data);
@@ -111,7 +111,7 @@ const EditCatPage = memo(props => {
           {
             console.log('helo par',response.data.data.parent)
            
-         axios.get(`http://95.111.240.143:8080/ecom-api/categories/${response.data.data.parent}`, config)
+         axios.get(`https://api.mazglobal.co.uk/maz-api/categories/${response.data.data.parent}`, config)
          .then(res=>{
            console.log('cc',res.data.data)
            setMain(res.data.data)
@@ -124,7 +124,7 @@ const EditCatPage = memo(props => {
         }
           
         }).catch(error=>console.log(error));
-       axios.get(`http://95.111.240.143:8080/ecom-api/categories`, config)
+       axios.get(`https://api.mazglobal.co.uk/maz-api/categories`, config)
        .then(res=>{
          let list=[]
          res.data.data.map(it=>{

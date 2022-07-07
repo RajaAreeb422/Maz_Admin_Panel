@@ -29,7 +29,7 @@ const EditSupplier = ()=> {
   const { id } = router.query;
 
   useEffect(() => {
-   axios.get(`http://95.111.240.143:8080/ecom-api/suppliers/${id}`)
+   axios.get(`https://api.mazglobal.co.uk/maz-api/suppliers/${id}`)
    .then(res=>{
        console.log('data',res.data.data)
        setState(res.data.data)
@@ -46,7 +46,7 @@ const EditSupplier = ()=> {
     };
     axios
       .put(
-        `http://95.111.240.143:8080/ecom-api/suppliers/${id}`,
+        `https://api.mazglobal.co.uk/maz-api/suppliers/${id}`,
         put,config,
 
         { headers: { 'content-type': 'application/json' } },

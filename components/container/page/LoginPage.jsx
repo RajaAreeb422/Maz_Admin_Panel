@@ -124,7 +124,7 @@ const handleClickShowPassword = () => {
   const submitHandler=(e)=>{
     e.preventDefault();
     
-    axios.post(`https://mazglobal.co.uk/maz-api/users/login`,{email:validate.email,password:validate.password},
+    axios.post(`https://api.mazglobal.co.uk/maz-api/users/login`,{email:validate.email,password:validate.password},
   
   {headers: { 'content-type': 'application/json' }}
   )

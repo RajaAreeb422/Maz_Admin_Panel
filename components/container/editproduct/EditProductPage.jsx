@@ -111,7 +111,7 @@ const EditProductPage = memo(props => {
       if(mounted===true)
       {
       axios
-        .get(`http://95.111.240.143:8080/ecom-api/products/${id}`)
+        .get(`https://api.mazglobal.co.uk/maz-api/products/${id}`)
         .then(response => {
           console.log("quantity",response.data.data)
           setData(response.data.data);
@@ -122,7 +122,7 @@ const EditProductPage = memo(props => {
             response.data.data.images.map(item=>{
               
               //p=p.substring(p.length-2)
-              let x='http://95.111.240.143/ecom-api/'+item
+              let x='https://api.mazglobal.co.uk/'+item
               // for(let i=0;i<p.length;i++)
               // {
               //   if(p[i]===']')
@@ -169,11 +169,11 @@ const EditProductPage = memo(props => {
 
          
           axios
-            .get(`http://95.111.240.143:8080/ecom-api/products/variants`)
+            .get(`https://api.mazglobal.co.uk/maz-api/products/variants`)
             .then(res => setVList(res.data.data));
 
           axios
-            .get('http://95.111.240.143:8080/ecom-api/suppliers')
+            .get('https://api.mazglobal.co.uk/maz-api/suppliers')
             .then(res => {
               setSupplier(res.data.data);
               res.data.data.map(item => {
@@ -184,7 +184,7 @@ const EditProductPage = memo(props => {
             })
             .catch(err => console.log(err));
           axios
-            .get('http://95.111.240.143:8080/ecom-api/categories')
+            .get('https://api.mazglobal.co.uk/maz-api/categories')
             .then(res => {
               setAllCategory(res.data.data);
               res.data.data.map(cid => {
@@ -201,7 +201,7 @@ const EditProductPage = memo(props => {
                     setCatId(cid.id);
                     axios
                       .get(
-                        `http://95.111.240.143:8080/ecom-api/categories/${cid.parent}`,
+                        `https://api.mazglobal.co.uk/maz-api/categories/${cid.parent}`,
                       )
                       .then(resp => {
                         setParentName(resp.data.data);
@@ -292,7 +292,7 @@ const EditProductPage = memo(props => {
     else{
 
     axios
-      .put(`http://95.111.240.143:8080/ecom-api/products/${id}`, state, config)
+      .put(`https://api.mazglobal.co.uk/maz-api/products/${id}`, state, config)
       .then(response => {
         console.log(response.data);
         //setUpdatedAt(response.data.updatedAt);
@@ -317,7 +317,7 @@ const EditProductPage = memo(props => {
     //onClick={()=>addToast("success",{appearence:"success"})}
     const name = e.target.name;
     const value = e.target.value;
-    axios.get(`http://95.111.240.143:8080/ecom-api/suppliers/${e.target.value}`)
+    axios.get(`https://api.mazglobal.co.uk/maz-api/suppliers/${e.target.value}`)
     .then(res=>{
      setSuppName(res.data.data.name)
      // console.log('supp',namee,res.data.data.name)
@@ -980,7 +980,7 @@ const EditProductPage = memo(props => {
 
       </div>
 
-
+{/* 
       <div className="optiondiv">
         <span className="opleft">Option</span>
         <form>
@@ -1010,7 +1010,7 @@ const EditProductPage = memo(props => {
                       
                       <div style={{marginLeft:'570px'}}>
                       <EditOutlined
-                      //style={{marginLeft:'500px'}}
+                      
                        className="EditVar"
                         onClick={() => EditValue(j)}
                       />
@@ -1057,7 +1057,7 @@ const EditProductPage = memo(props => {
                                 x
                               </div>
 
-                              {/* className='dleteSVar' */}
+                            
                             </div>
                           );
                         })}
@@ -1532,7 +1532,7 @@ const EditProductPage = memo(props => {
           </span>
         </div>
       )}
-   
+    */}
    {disable==true?
       <button type="button" disabled className="newaddproBtn" >
         Update

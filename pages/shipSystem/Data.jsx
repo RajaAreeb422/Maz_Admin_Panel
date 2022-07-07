@@ -20,7 +20,7 @@ const Data = memo(props => {
     let mounted = true;
     console.log('in useeffec');
     //get the shipper list from the database
-    axios.get('https://mazglobal.co.uk/maz-api/shipping').then(response => {
+    axios.get('https://api.mazglobal.co.uk/maz-api/shipping').then(response => {
       var i = 1;
       response.data.data.map(item => {
         item['_id'] = i++;
@@ -63,12 +63,12 @@ const Data = memo(props => {
     };
     console.log('moveeeeeeeeeeeeeeeee', id);
     axios
-      .delete(`https://mazglobal.co.uk/maz-api/shipping/${id}`, config)
+      .delete(`https://api.mazglobal.co.uk/maz-api/shipping/${id}`, config)
       .then(response => {
         console.log(response);
         toggle();
         axios
-          .get(`https://mazglobal.co.uk/maz-api/shipping`, config)
+          .get(`https://api.mazglobal.co.uk/maz-api/shipping`, config)
           .then(res => {
             setData(res.data.data);
           })

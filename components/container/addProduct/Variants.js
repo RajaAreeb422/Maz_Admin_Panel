@@ -64,7 +64,7 @@ const Variants = props => {
     };
     console.log(config);
     axios
-      .get(`http://95.111.240.143:8080/ecom-api/products/variants`)
+      .get(`https://api.mazglobal.co.uk/maz-api/products/variants`)
       .then(response => {
         setState(response.data.data);
         if (mounted) {

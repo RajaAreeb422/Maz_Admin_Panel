@@ -51,21 +51,21 @@ const MENUS = [
     href: '/shipSystem/Ship',
     label: 'Shippers',
     icon: 'fas fa-shipping-fast',
-  },
-  {
-    name: 'Coupons',
-    as: 'a',
-    href: '/coupon/Coupon',
-    label: 'Coupons',
-    icon: 'fas fa-gift',
-  },
-  {
-    name: 'Tags',
-    as: 'a',
-    href: '/tag/tag',
-    label: 'Tags',
-    icon: 'fas fa-gift',
   }
+  // {
+  //   name: 'Coupons',
+  //   as: 'a',
+  //   href: '/coupon/Coupon',
+  //   label: 'Coupons',
+  //   icon: 'fas fa-gift',
+  // },
+  // {
+  //   name: 'Tags',
+  //   as: 'a',
+  //   href: '/tag/tag',
+  //   label: 'Tags',
+  //   icon: 'fas fa-gift',
+  // }
 ];
 
 
