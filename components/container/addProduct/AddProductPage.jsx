@@ -82,18 +82,18 @@ const AddProductPage = memo(props => {
     // axios.get(`http://localhost:8080/maz-api/products`).then(response => {
        if (mounted) {
         axios
-          .get('https://api.mazglobal.co.uk/maz-api/categories')
+          .get('https://mazglobal.co.uk/maz-api/categories')
           .then(res => {
             console.log("categories are",res.data)
             setParent(res.data.data)})
           .catch(err => console.log(err));
         axios
-          .get('https://api.mazglobal.co.uk/maz-api/suppliers')
+          .get('https://mazglobal.co.uk/maz-api/suppliers')
           .then(res => setSupplier(res.data.data))
           .catch(err => console.log(err));
 
           axios
-          .get('https://api.mazglobal.co.uk/maz-api/vehicles')
+          .get('https://mazglobal.co.uk/maz-api/vehicles')
           .then(res => {
             let list=[]
             res.data.data.map(vh=>{
@@ -163,7 +163,7 @@ const AddProductPage = memo(props => {
       console.log('state issss', state);
     axios
     .post(
-      `https://api.mazglobal.co.uk/maz-api/products`,
+      `https://mazglobal.co.uk/maz-api/products`,
       state,
       config,
 
@@ -181,17 +181,33 @@ const AddProductPage = memo(props => {
         
         axios
           .post(
-            `https://api.mazglobal.co.uk/maz-api/products/uploadProductImages/${response.data.InsertedId}`,
+            `https://mazglobal.co.uk/maz-api/products/uploadProductImages/${response.data.InsertedId}`,
             formData,
             config,
             {},
           )
           .then(res => {
             console.log(res.data);
-            succtoggle();
+          for(let i=0;i<selected1.length;i++)
+        {
+              
+        axios
+        .post(
+          `https://mazglobal.co.uk/maz-api/products/addVehicle`,
+         {vId:selected1[i],pId:response.data.InsertedId,pno:state.part_no}
+        )
+        .then(res => {
+          console.log(res.data);
+         
+        }).catch(err=>console.log(err))
+
+        }
+           succtoggle();
           })
       .catch(error => {
         console.log(error);
+
+        
       });
         
       
@@ -508,7 +524,7 @@ const AddProductPage = memo(props => {
       </div>
 
       <span>
-        {/* <Variants variantCall={handleVariant} /> */}
+        <Variants variantCall={handleVariant} />
       </span>
       <button type="submit" onClick={submitHandler} className="newaddproButton">
         Save
