@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 //import { response } from "express";
 
 import { useState, useEffect } from 'react';
-import { ToggleGroupFormatter } from 'react-data-grid';
+
 import './adduser.scss';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import router from 'next/router';
