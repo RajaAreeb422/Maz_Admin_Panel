@@ -47,7 +47,7 @@ const AddTagPage = memo(props => {
       
     axios
     .post(
-      `http://localhost:8080/ecom-api/tag`,
+      `https://api.mazglobal.co.uk/maz-api/tag`,
       state,config,
 
       { headers: { 'content-type': 'application/json' } },
@@ -95,11 +95,17 @@ const AddTagPage = memo(props => {
 
   const PostCategory = () => (
     <div className="addtagmain">
+      
       <div className="addtag">
+      <div className="sepration">
+        <div>
+      <img  className='addtagimg1' src='https://png.pngtree.com/png-clipart/20210310/original/pngtree-blue-e-commerce-promotion-online-shopping-png-image_5936591.jpg'/>
       <ToastContainer align={"right"} position={"middle"}/>
+      </div>
+      <div>
         <div className='addtagNav'>
         <h1 className="addtagTitle">Add Tag</h1>
-        <img  className='addtagimg' src='https://freepngimg.com/thumb/gift/137009-vector-surprise-birthday-gift-png-free-photo.png'/>
+        
         </div>  
         
         <form className="addtagForm" onSubmit={submitHandler}>
@@ -108,7 +114,7 @@ const AddTagPage = memo(props => {
               <label  style={{marginLeft:'0px'}}>Tag Name</label>
               <input
                 type="text"
-                style={{marginLeft:'0px',width:'300px'}}
+                style={{marginLeft:'0px',width:'450px'}}
                 placeholder="...."
                 className="form-control"
                 name="name"
@@ -124,9 +130,11 @@ const AddTagPage = memo(props => {
               Add
             </button>
           </div>
+          
         </form>
+        </div>
       </div>
-      
+      </div>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Alert</ModalHeader>
         <ModalBody>

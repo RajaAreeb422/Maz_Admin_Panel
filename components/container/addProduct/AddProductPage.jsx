@@ -10,30 +10,29 @@ import DropZone from './DropZone';
 import Variants from './Variants';
 import router from 'next/router';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import jwt_decode from "jwt-decode";
 //import { AddAPhoto } from '@material-ui/icons'
 //import 'react-toastify/dist/ReactToastify.scss';
 //import { toast, ToastContainer } from 'react-nextjs-toast'
-import { MultiSelect } from "react-multi-select-component";
+
 // toast.configure();
 
 const AddProductPage = memo(props => {
   const [state, setState] = useState({
     name: '',
-    category_id: null,
-    regular_price: null,
-    stock_quantity: null,
-    part_no: '',
-    oem_no:'',
-    application:'',
-    package:'',
-   
+    category_id:null,
+    collection_id:0,
+    supplier_id:null,
+    price: null,
+    quantity: null,
+    sku: '',
     product_description: '',
-    supplier_id: null,
-    cross_ref:'',
+   
     variants: [],
     combinations: [],
   });
   const [modal, setModal] = React.useState(false);
+  const [brandmodal, setBrandModal] = React.useState(false);
   const [Imgmodal, setImgModal] = React.useState(false);
   const [succmodal, setSuccModal] = React.useState(false);
   const [selected, setSelected] = useState([]);
@@ -46,68 +45,59 @@ const AddProductPage = memo(props => {
   });
   const [parnt_cat, setParent] = useState([]);
   const [supplier, setSupplier] = useState([]);
-  const [veh, setVeh] = useState([]);
   const [sub, setSub] = useState(state.category_id);
-
+  const [protext, setProText] = useState('');
+  const [prolist, setProList] = useState(false);
+  const [profilterrow, setProFilterrow] = useState([]);
+  const [collectiondiv, setCollectionDiv] = useState(false);
+  const [collections, setCollections] = useState([]);
+  const [prodata, setProData] = useState([]);
   const {
     name,
     category_id,
-    regular_price,
+    price,
     quantity,
+    sku,
     product_description,
-    supplier_id,
     variants,
     combinations,
-    part_no,
-    oem_no,
-    application,
-    packag,
-    
-    cross_ref
+    collection_id,
+    supplier_id
   } = state;
   const toggle = () => setModal(!modal);
+  const brandtoggle = () => setBrandModal(!brandmodal);
   const Imgtoggle = () => setImgModal(!Imgmodal);
   const succtoggle = () => setSuccModal(!succmodal);
-  const options = [
-    { label: "Grapes 🍇", value: "grapes" },
-    { label: "Mango 🥭", value: "mango" },
-    { label: "Strawberry 🍓", value: "strawberry", disabled: true },
-  ];
-  
-  const [selected1, setSelected1] = useState([]);
- 
   useEffect(() => {
     let mounted = true;
-    
-    // axios.get(`http://localhost:8080/maz-api/products`).then(response => {
-       if (mounted) {
+    var decoded = jwt_decode(localStorage.getItem('token'));
+    console.log('local',localStorage.getItem('token'))
+    console.log('lres',decoded.result)
+   // setUser(decoded.result)
+    setState({...state,['supplier_id']:decoded.result.supplier_id})
+    // 95.111.240.143
+    // axios.get(`http://localhost:8080/ecom-api/products`).then(response => {
+      if (mounted) {
+        if(decoded.result.role_id==1)
+        {
+      axios
+      .get(`https://api.mazglobal.co.uk/maz-api/categories`)
+      .then(res => setParent(res.data.data))
+      .catch(err => console.log(err));
+          }
+    else{
+      axios
+      .get(`https://api.mazglobal.co.uk/maz-api/categories/getCategoriesBySupplierId/${decoded.result.supplier_id}`)
+      .then(res => setParent(res.data.data))
+      .catch(err => console.log(err));
+         }
         axios
-          .get('https://mazglobal.co.uk/maz-api/categories')
-          .then(res => {
-            console.log("categories are",res.data)
-            setParent(res.data.data)})
-          .catch(err => console.log(err));
-        axios
-          .get('https://mazglobal.co.uk/maz-api/suppliers')
+          .get('https://api.mazglobal.co.uk/maz-api/suppliers')
           .then(res => setSupplier(res.data.data))
+        
           .catch(err => console.log(err));
 
-          axios
-          .get('https://mazglobal.co.uk/maz-api/vehicles')
-          .then(res => {
-            let list=[]
-            res.data.data.map(vh=>{
-              list.push({
-                id:vh.id,
-                label:vh.name,
-                value:vh.id
-              })
-            })
-            setVeh(list)
-            
-          }
-            )
-          .catch(err => console.log(err));
+         
       }
     // });
     // return () => mounted = false;
@@ -121,22 +111,21 @@ const AddProductPage = memo(props => {
     };
     e.preventDefault();
     console.log('subbbbbbb', sub);
-    console.log('supp id', state.supplier_id);
-    //sub=parseInt(sub)
-    state.category_id = sub;
-    let cc=sub;
-    let ss=state.supplier_id
-    let pp=state.regular_price
-    let qq=state.stock_quantity
-    cc=parseInt(cc)
-    ss=parseInt(ss)
-   pp=parseInt(pp)
+    console.log('coll id', state);
+   
+    let pp=state.price
+    let qq=state.quantity
+    let col=0;
+    if(state.collection_id==0 || state.collection_id=='' || state.collection_id==null)
+    col=parseInt(0)
+    else
+    col=state.collection_id
+    col=parseInt(col)
+    pp=parseInt(pp)
     qq=parseInt(qq)
-    state.category_id = cc;
-    state.supplier_id = ss;
-    state.regular_price = pp;
-    state.stock_quantity = qq;
-    //state.supplier_id=parseInt(state.supplier_id)
+   
+    state.price = pp;
+    state.quantity = qq;
     if(variantss.length!=0)
     {
     state.variants = variantss[0];
@@ -148,28 +137,29 @@ const AddProductPage = memo(props => {
       state.combinations = null;
       console.log('vvvvv', variantss);
     console.log('product issss', state);
-    console.log('selected issss', selected1);
     }
    
-    if(state.name=='' || state.part_no==''||state.stock_quantity==null||state.regular_price==null||state.product_description==''||
-    state.category_id==null||state.supplier_id==null )
+    if(state.name=='' || state.category_id=='' || state.category_id==null||state.sku==''||state.quantity==null||state.price==null||state.product_description==''
+      )
     toggle()
     else if(selected.length==0)
     {
       Imgtoggle()
     }
-    //toast.notify('Plz fill all the fields')
+   
     else{
       console.log('state issss', state);
+     // https://api.mazglobal.co.uk/maz-api/products
     axios
     .post(
-      `https://mazglobal.co.uk/maz-api/products`,
+      `https://api.mazglobal.co.uk/maz-api/products`,
       state,
       config,
 
       { headers: { 'content-type': 'application/json' } },
     )
     .then(response => {
+      console.log("State",state)
       console.log('Insert Id', response.data);
       console.log('Selectd', selected);
      
@@ -181,33 +171,17 @@ const AddProductPage = memo(props => {
         
         axios
           .post(
-            `https://mazglobal.co.uk/maz-api/products/uploadProductImages/${response.data.InsertedId}`,
+            `https://api.mazglobal.co.uk/maz-api/products/uploadProductImages/${response.data.InsertedId}`,
             formData,
             config,
             {},
           )
           .then(res => {
             console.log(res.data);
-          for(let i=0;i<selected1.length;i++)
-        {
-              
-        axios
-        .post(
-          `https://mazglobal.co.uk/maz-api/products/addVehicle`,
-         {vId:selected1[i],pId:response.data.InsertedId,pno:state.part_no}
-        )
-        .then(res => {
-          console.log(res.data);
-         
-        }).catch(err=>console.log(err))
-
-        }
-           succtoggle();
+            succtoggle();
           })
       .catch(error => {
         console.log(error);
-
-        
       });
         
       
@@ -238,6 +212,16 @@ const AddProductPage = memo(props => {
     });
   };
 
+
+  const handleCollChange = name => e => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setState({
+      ...state,
+      [name]: value,
+    });
+  }
   const handleChange = name => e => {
     const name = e.target.name;
     const value = e.target.value;
@@ -282,6 +266,115 @@ const AddProductPage = memo(props => {
     setVariants({ ...child });
     console.log('parent Variants array', variantss);
   };
+  
+  const InputProSearch = name => e => {
+    const val = e.target.value;
+    console.log("val",val);
+    setProText(val);
+    if (val === '') {
+      setProList(false);
+ 
+    } else {
+      setProList(true);
+
+      const filteredRows = supplier.filter(row => {
+        return row.name.toLowerCase().includes(protext.toLowerCase());
+      });
+      // setData(filteredRows);
+      console.log("suppliers",filteredRows)
+      setProFilterrow(filteredRows);
+    }
+
+    
+  };
+ 
+
+  function requestproSearch(item) {
+    setProList(false);
+    setProText(item.name)
+    axios
+    .get(`https://api.mazglobal.co.uk/maz-api/collections`)
+      .then(res => {
+
+        let list = [];
+        res.data.data.map(cl=>{
+          if(cl.brand_id==item.id)
+          {
+            list.push(cl);
+          }
+        })
+        setCollectionDiv(true);
+        setCollections(list);
+      })
+    //     console.log('single item response', res.data.data);
+    //     setProText(item.name);
+    //     setProduct(res.data.data);
+    //    console.log("price un",item)
+    //     let list = [];
+    //     if (res.data.data.combinations.length > 0) {
+    //       res.data.data.combinations.map(it => {
+    //         console.log("img",item.path)
+    //         list.push({
+    //           ...it,
+    //           ['product_id']: item.id,
+    //           ['path']:item.path
+    //         });
+    //       });
+
+    //       setCombination(list);
+    //       setCombDiv(true);
+    //     } else {
+    //       setCombDiv(false);
+    //       setProText(item.name);
+    //       const list = [...comVal];
+    //       const prolist = [...nproduct];
+    //       let s = sum;
+    //       s = s + 1;
+    //       setSum(s);
+         
+    //       prolist.push({
+    //         product_id: item.id,
+    //         product_variant_id: null,
+    //         product_variant_name: '',
+    //         product_name: item.name,
+    //         path:item.path,
+    //         price: item.price,
+    //         quantity: 1,
+    //       });
+    //       state.products = prolist;
+    //       setNewProduct(prolist);
+    //       list.push({
+    //         product_id: item.id,
+    //         product_variant_id: null,
+    //         variantname: '',
+    //         product_name: item.name,
+    //         path:item.path,
+    //         regular_price: item.price,
+    //         quantity: 1,
+    //       });
+        
+    //       setComVal(list);
+    //       var tt = total;
+    //       tt = tt + item.price;
+    //       setTotal(tt);
+    //     }
+    //   })
+    //   .catch(err => console.log(err));
+
+    //}
+    //}
+  }
+
+  const AddCollection = () => {
+    // setCombination([]);
+       setCollectionDiv(false);
+    // setProText('');
+       brandtoggle();
+   
+  };
+
+
+
   const PostProduct = () => (
     <div className="addpromain">
       <h1 className="newaddproTitle">New Product</h1>
@@ -301,58 +394,43 @@ const AddProductPage = memo(props => {
               onChange={handleChange(name)}
             />
           </div>
-       
-          <div className="newaddproflexItem" style={{marginBottom:'20px'}}>
-            <div className="flexdiv">
-              <div className="newaddpro1Select">
-                <label for="exampleFormControlSelect1">Part No</label>
-                <input
-                  required
-                  type="text"
-                  name="part_no"
-                  placeholder="  part no..."
-                  style={{
-                    width: '285px',
-                    border: ' 1px solid gray',
-                    borderRadius: '5px',
-                    height: '35px',
-                  }}
-                  value={state.part_no}
-                  onChange={handleChange(name)}
-                />
-              </div>
-            </div>
-            <div className="flexdiv">
-              <div className="newaddpro1Select" style={{ marginLeft: '30px' }}>
-                <label for="exampleFormControlSelect1">OEM No</label>
-                <input
-                  style={{
-                    width: '285px',
-                    border: ' 1px solid gray',
-                    borderRadius: '5px',
-                    height: '35px',
-                  }}
-                  required
-                  placeholder=" OEM"
-                  name="oem_no"
-                  type="text"
-                  value={state.oem_no}
-                  onChange={handleChange(name)}
-                />
-              </div>
-            </div>
-          </div>
-
-
           <div className="newaddproflexItem">
+            <div className="flexdiv">
+            <div className="newaddpro1Select">
+            <label for="exampleInputName">Product Sku</label>
+            <input
+              type="text"
+              className="newaddproSelect"
+              id="name"
+              placeholder="Stock Keeping Unit"
+              required
+              name="sku"
+              style={{
+                width: '285px',
+                border: ' 1px solid gray',
+                borderRadius: '5px',
+                height: '35px',
+              }}
+              value={state.sku}
+              onChange={handleChange(name)}
+            />
+          </div>
+          </div>
+         
           <div className="flexdiv">
-              <div className="newaddpro1Select">
+            <div className="newaddpro1Select" style={{marginLeft:'30px'}}>
             <label for="exampleFormControlSelect1"  >Category</label>
             <select
               className="qtySelect"
               id="parent"
               required
               name="category_id"
+              style={{
+                width: '285px',
+                border: ' 1px solid gray',
+                borderRadius: '5px',
+                height: '35px',
+              }}
               value={state.category_id}
               onChange={handleChange(name)}
             >
@@ -364,6 +442,8 @@ const AddProductPage = memo(props => {
             </select>
           </div>
           </div>
+          </div>
+          {/* 
           <div className="flexdiv">
           <div className="newaddpro1Select">
             <label for="exampleFormControlSelect1" style={{marginLeft:'30px'}}>Supplier</label>
@@ -372,7 +452,7 @@ const AddProductPage = memo(props => {
               required
               name="supplier"
               style={{marginLeft:'30px'}}
-              //value={state.category_id}
+              
               onChange={handleSuppChange(name)}
             >
               <option value="">Select Product Supplier</option>
@@ -383,14 +463,16 @@ const AddProductPage = memo(props => {
           </div>
           </div>
           </div>
+           */}
 
+           {/* Category Module */}
           {mydiv && (
             <div className="newaddproItem">
               <label for="exampleFormControlSelect1">Sub Category</label>
               <select
                 className="newaddproSelect"
                 id="sub"
-                //required
+                required
                 name="category"
                 value={sub}
                 onChange={handleSubChange(name)}
@@ -398,47 +480,13 @@ const AddProductPage = memo(props => {
                 {console.log('cat is', state.category_id)}
                 <option value={state.category_id}>Select Category</option>
                 {parnt_cat.map(p => {
-                  {
-                    console.log('parent is ', p.parent);
-                  }
-
                   if (p.parent == state.category_id)
                     return <option value={p.id}>{p.name}</option>;
                 })}
               </select>
             </div>
-          )}
-          
-          <div className="newaddproItem">
-              <label for="exampleFormControlSelect1">Vehicle</label>
-              {/* <select
-                className="newaddproSelect"
-                id="veh"
-                //required
-                name="vehicle_id"
-                
-                onChange={handleChange(name)}
-              >
-                  
-               <option value={state.vehicle_id}>Select Vehicle</option>
-                {veh.map(p => {
-                
-                    return <option value={p.id}>{p.name}</option>;
-                })} 
-              </select> */}
+          )} 
 
-<MultiSelect
-             className="newaddproSelect"
-             id="veh"
-                //required
-                name="vehicle_id"
-        options={veh}
-        value={selected1}
-        onChange={setSelected1}
-        labelledBy="Select"
-      />
-            </div>
-           
        
           <div className="newaddproflexItem">
             <div className="flexdiv">
@@ -447,7 +495,7 @@ const AddProductPage = memo(props => {
                 <input
                   required
                   type="number"
-                  name="regular_price"
+                  name="price"
                   placeholder="  Price in Rs..."
                   style={{
                     width: '285px',
@@ -455,7 +503,7 @@ const AddProductPage = memo(props => {
                     borderRadius: '5px',
                     height: '35px',
                   }}
-                  value={state.regular_price}
+                  value={state.price}
                   onChange={handleChange(name)}
                 />
               </div>
@@ -472,9 +520,9 @@ const AddProductPage = memo(props => {
                   }}
                   required
                   placeholder="  Quantity"
-                  name="stock_quantity"
+                  name="quantity"
                   type="number"
-                  value={state.stock_quantity}
+                  value={state.quantity}
                   onChange={handleChange(name)}
                 />
               </div>
@@ -489,34 +537,21 @@ const AddProductPage = memo(props => {
             style={{width:'600px',height:'80px'}}
             required
             onChange={handleChange('product_description')}/>
-           
-             
+        
           </div>
-          {/* <div className="newaddproItem">
-            <label for="exampleFormControlSelect1">Cross Reference</label>
-            
-            <textarea
-            name="package"
-            style={{width:'600px',height:'80px'}}
-            value={state.package}
-            required
-            onChange={handleChange('package')}/>
-           
-             
-          </div> */}
-          <div className="newaddproItem">
-            <label for="exampleFormControlSelect1">Application</label>
-            
-            <textarea
-            name="application"
-            style={{width:'600px',height:'80px'}}
-            required
-            onChange={handleChange('application')}/>
-           
-             
-          </div>
+          
         </form>
+        
       </div>
+      <div className="newaddpro2">
+      <button
+            onClick={brandtoggle}
+            style={{ marginLeft: '20px' }}
+            className="ordshipbtn"
+          >
+            Add Collection
+          </button>
+          </div>
       <div className="newaddpro1">
         <label className="imgdiv">Images</label>
 
@@ -564,6 +599,79 @@ const AddProductPage = memo(props => {
           </Button>
         </ModalFooter>
       </Modal>
+
+
+
+
+
+      <Modal isOpen={brandmodal} toggle={brandtoggle}>
+          <ModalHeader toggle={AddCollection}>Collections</ModalHeader>
+          <ModalBody>
+            <form>
+              <label for="exampleFormControlSelect1">Brand Name</label>
+              <input
+                type="text"
+                name="search"
+                id="header-search"
+                autoComplete="off"
+                // options={searchList}
+                value={protext}
+                // openMenuOnClick={false}
+                placeholder="Search Brand"
+                className="form-control"
+                onChange={InputProSearch('search')}
+              />
+
+              {prolist && (
+                <div className="ordlstdropdown">
+                  {profilterrow.map((item, i) => {
+                    return i < 10 ? (
+                      <li
+                        className="ulistitem"
+                        onClick={() => requestproSearch(item)}
+                      >
+                        <span style={{ marginLeft: '10px' }}>{item.name}</span>
+                      </li>
+                    ) : (
+                      <></>
+                    );
+                  })}
+                </div>
+              )}
+
+              {collectiondiv && (
+                <>
+                   <label for="exampleFormControlSelect1" style={{marginTop:'10px'}}>Brand Collections</label>
+                   <select 
+                    className="form-control" 
+                    style={{marginTop:'10px'}}
+                    id="collection"
+                    required
+                    name="collection_id"
+                    onChange={handleCollChange('collection_id')}
+                   >
+                  {collections.map((com, i) => {
+                    return (
+                      <option value={com.id}>{com.name}</option>
+                     
+                    );
+                  })}
+                   </select>
+                </>  
+              )}
+
+            </form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={AddCollection}>
+              Okay
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+
+
+
 
     </div>
   );

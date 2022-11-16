@@ -22,9 +22,7 @@ class MyApp extends App {
     } = ctx;
     let pageProps = {};
     if (Component.getInitialProps) {
-      console.log("component props", await Component.getInitialProps({ ctx }))
       pageProps = await Component.getInitialProps({ ctx });
-      console.log("page props",pageProps)
     }
 
     return { pageProps };

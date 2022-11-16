@@ -8,12 +8,7 @@ module.exports = {
   //         discardComments: {
   //           removeAll: true
   //         }
-  //       },
-  //     {
-  //       "styled-jsx": {
-  //         "plugins": ["@styled-jsx/plugin-sass"]
   //       }
-  //     }
   //     ]
   //   }),
   //   require("autoprefixer")({

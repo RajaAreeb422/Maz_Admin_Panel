@@ -6,17 +6,12 @@ import SearchBar from 'material-ui-search-bar';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-//import ToggleButton from '@material-ui/lab/ToggleButton';
-//import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-//import { Link }  from "react-router-dom";
 import Link from 'next/link';
-//import { BrowserRouter , Switch, Route } from "react-router-dom";
 import { DeleteOutline, Edit } from '@material-ui/icons';
-
 import './clist.scss';
 import useFetch from 'react-fetch-hook';
 import axios from 'axios';
-//import DataGrid from 'react-data-grid';
+import jwt_decode from "jwt-decode";
 
 
 
@@ -24,6 +19,7 @@ const CategoryPage = memo(props => {
 
   const switchstate = {};
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
   const [path, setPath] = useState();
   const [list, setList] = useState([]);
   const [Sactive, setSactive] = useState([]);
@@ -37,14 +33,18 @@ const CategoryPage = memo(props => {
 
   useEffect(() => {
     let mounted = true;
-    console.log('in useeffec');
+    var decoded = jwt_decode(localStorage.getItem('token'));
+ 
+    setUser(decoded.result)
     const config = {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token'),
       },
     };
-    //getting categories from database..
-    axios
+   
+    if(decoded.result.role_id==1)
+    {
+      axios
       .get('https://api.mazglobal.co.uk/maz-api/categories', config)
       .then(response => {
         console.log(response.data);
@@ -88,6 +88,54 @@ const CategoryPage = memo(props => {
         }
     
       });
+    }
+    else{
+      axios
+      .get(`https://api.mazglobal.co.uk/maz-api/categories/getCategoriesBySupplierId/${decoded.result.supplier_id}`, config)
+      .then(response => {
+        console.log(response.data);
+        if (mounted) {
+          var i = 1;
+         let activelist=[]
+          response.data.data.map(exam => {
+            exam['_id'] = i++;
+          
+            let pp = 'https://api.mazglobal.co.uk/' + exam.path;
+            pp=pp.toString();
+            exam['path']=pp
+            console.log("ppp",pp)
+            
+            setPath(pp)
+            if (exam.parent) {
+              
+              response.data.data.map(p_v => {
+                if (exam.parent == p_v.id) {
+                  exam['parent_name'] = p_v.name;
+                 
+                  
+                }
+              });
+            } else {
+              exam['parent_name'] = 'null';
+            }
+
+            switchstate['switch-' + exam.id] = exam.status;
+            activelist[exam.id]={
+              id:exam.id,
+              status:exam.status
+            }
+          }),
+          setSactive(activelist) 
+          setData(response.data.data);
+          setList(response.data.data)
+          
+          setState(switchstate);
+         
+        }
+    
+      });
+    }
+  
 
     //return () => mounted = false;
   }, []);
@@ -109,15 +157,15 @@ const CategoryPage = memo(props => {
         axios
           .get(`https://api.mazglobal.co.uk/maz-api/categories`, config)
           .then(res => {
-            console.log('maz',res.data.data)
             var i=1
             res.data.data.map(exam => {
               exam['_id'] = i++;
+              console.log("path",exam.path)
               let pp = 'https://api.mazglobal.co.uk/' + exam.path;
               pp=pp.toString();
               exam['path']=pp
               console.log("ppp",pp)
-              
+
               setPath(pp)
 
               if (exam.parent) {
@@ -202,26 +250,26 @@ const CategoryPage = memo(props => {
   //set the columns and to be displayed on the interface.. Built in syntax for DataGrid Component..
   const columns = [
     { field: '_id', headerName: 'ID', width: 150 },
-    // {
-    //   field: 'patn',
-    //   headerName: 'Image',
-    //   width: 240,
+    {
+      field: 'patn',
+      headerName: 'Image',
+      width: 240,
 
-    //   renderCell: params => {
-        
-    //     return (
-    //       <img
-    //         style={{ height: '70px', width: '100px' }}
-    //         src={params.row.path}
-    //       />
-    //     );
-    //   },
-    // },
+      renderCell: params => {
+        //let i=0;
+        //console.log(params)
+        return (
+          <img
+            style={{ height: '100px', width: '100px' }}
+            src={params.row.path}
+          />
+        );
+      },
+    },
 
     { field: 'name', headerName: ' Category Name', width: 190 },
     { field: 'parent_name', headerName: 'Parent Category', width: 190 },
 
-    { field: 'description', headerName: 'Description', width: 210 },
 
     {
       field: 'action',

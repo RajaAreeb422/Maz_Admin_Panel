@@ -13,10 +13,12 @@ import {
 import './product.scss';
 import useFetch from 'react-fetch-hook';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 const ProductPage = memo(props => {
   const switchstate = {};
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
   const [path, setPath] = useState([]);
   const [state, setStates] = useState([]);
   const [statusValues, setState] = useState({});
@@ -27,25 +29,39 @@ const ProductPage = memo(props => {
 
   useEffect(() => {
     let mounted = true;
-    console.log('in useeffec');
-    //getting product list from database
+    var decoded = jwt_decode(localStorage.getItem('token'));
+ 
+   setUser(decoded.result)
     axios.get('https://api.mazglobal.co.uk/maz-api/products').then(response => {
-      if (mounted) {
         var i = 1;
         const list = [...path];
+        let productList=[]
         response.data.data.map(exam => {
           exam['_id'] = i++;
-
           //get the category name from category id
-          axios
+          if(exam.collection_id!=0 )
+          {
+            axios
             .get(
-              `https://api.mazglobal.co.uk/maz-api/categories/${exam.category_id}`,
+              `https://api.mazglobal.co.uk/maz-api/categories/getCategoryByCollectionId/${exam.id}`,
             )
             .then(res => {
-              console.log('category name', res.data.data.name);
+            
               exam['Category'] = res.data.data.name;
             })
             .catch(err => console.log(err));
+          }
+         else{
+          axios
+          .get(
+            `https://api.mazglobal.co.uk/maz-api/categories/${exam.category_id}`,
+          )
+          .then(res => {
+          
+            exam['Category'] = res.data.data.name;
+          })
+          .catch(err => console.log(err));
+         }
 
           if (exam.path != null) {
             //because the image path coming from backend is like "../http://95.111.240.143" and so on. so to cut out the first two dots
@@ -57,14 +73,35 @@ const ProductPage = memo(props => {
           } else {
             list.push(null);
           }
-        }),
-          console.log('list', list);
-        setPath(list);
-        setData(response.data.data);
-        setStates(response.data.data);
-      }
-    });
+          console.log(exam)
+          if(decoded.result.role_id==1)
+          {
+            
+            productList.push(exam)
+          }
+             
+          else
+          {
+            
+            if(decoded.result.role_id==2 && decoded.result.supplier_id==exam.supplier_id)
+            {
+             
+             productList.push(exam)
+             console.log(productList)
+            }
+             else ''
+          }
 
+        }),
+        
+        console.log(productList)
+        setPath(list);
+        setData(productList);
+        setStates(productList);
+      
+    });
+   
+   
     //return () => mounted = false;
   }, []);
 
@@ -146,9 +183,9 @@ const ProductPage = memo(props => {
       renderCell: params => {
         return (
           <>
-            <Link href="/editproduct/[id]" as={`/editproduct/${params.row.id}`}>
+            {/* <Link href="/editproduct/[id]" as={`/editproduct/${params.row.id}`}>
               <EditOutlined className="proEdit">Edit</EditOutlined>
-            </Link>
+            </Link> */}
 
             <DeleteOutline
               className="proListDelete"

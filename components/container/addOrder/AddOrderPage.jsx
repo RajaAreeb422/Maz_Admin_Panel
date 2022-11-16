@@ -134,17 +134,17 @@ const AddOrderPage = memo(props => {
     };
 
     axios
-      .get(`https://mazglobal.co.uk/maz-api/users`, config)
+      .get(`http://95.111.240.143:8080/ecom-api/users`, config)
       .then(response => {
         setState(response.data.data);
         axios
-          .get(`https://mazglobal.co.uk/maz-api/products`, config)
+          .get(`http://95.111.240.143:8080/ecom-api/products`, config)
           .then(res => {
             setProData(res.data.data);
           })
           .catch(err => console.log(err));
         axios
-          .get(`https://mazglobal.co.uk/maz-api/shipping`, config)
+          .get(`http://95.111.240.143:8080/ecom-api/shipping`, config)
           .then(resp => {
             setShippers(resp.data.data);
           })
@@ -162,7 +162,7 @@ const AddOrderPage = memo(props => {
 
     axios
       .post(
-        `https://mazglobal.co.uk/maz-api/addresses/${user_Id}`,
+        `http://95.111.240.143:8080/ecom-api/addresses/${user_Id}`,
         bill,
 
         { headers: { 'content-type': 'application/json' } },
@@ -207,7 +207,7 @@ const AddOrderPage = memo(props => {
 
     axios
       .post(
-        `https://mazglobal.co.uk/maz-api/addresses/${user_Id}`,
+        `http://95.111.240.143:8080/ecom-api/addresses/${user_Id}`,
         newship,
 
         { headers: { 'content-type': 'application/json' } },
@@ -234,7 +234,7 @@ const AddOrderPage = memo(props => {
         const ship_arr = [];
         const selected_ship = [];
         axios
-          .get(`https://mazglobal.co.uk/maz-api/addresses/${user_Id}`, config)
+          .get(`http://95.111.240.143:8080/ecom-api/addresses/${user_Id}`, config)
           .then(response => {
             var i = 0;
             response.data.data.map(item => {
@@ -280,7 +280,7 @@ const AddOrderPage = memo(props => {
     e.preventDefault();
     
     axios
-      .put(`https://mazglobal.co.uk/maz-api/addresses/${address.id}`, billput)
+      .put(`http://95.111.240.143:8080/ecom-api/addresses/${address.id}`, billput)
       .then(response => {
         console.log('rsponse', response.data);
         toast.notify(`Billing Address Updated Succesfully`, {
@@ -302,7 +302,7 @@ const AddOrderPage = memo(props => {
     console.log(currentship.id);
     axios
       .put(
-        `https://mazglobal.co.uk/maz-api/addresses/${currentship.id}`,
+        `http://95.111.240.143:8080/ecom-api/addresses/${currentship.id}`,
         shipput,
       )
       .then(response => {
@@ -321,7 +321,7 @@ const AddOrderPage = memo(props => {
         const ship_arr = [];
 
         axios
-          .get(`https://mazglobal.co.uk/maz-api/addresses/${user_Id}`, config)
+          .get(`http://95.111.240.143:8080/ecom-api/addresses/${user_Id}`, config)
           .then(response => {
             var i = 0;
             response.data.data.map(item => {
@@ -497,7 +497,7 @@ const AddOrderPage = memo(props => {
     setProList(false);
 
     axios
-      .get(`https://mazglobal.co.uk/maz-api/products/${item.id}`)
+      .get(`http://95.111.240.143:8080/ecom-api/products/${item.id}`)
       .then(res => {
         console.log('single item response', res.data.data);
         setProText(item.name);
@@ -577,7 +577,7 @@ const AddOrderPage = memo(props => {
     const ship_arr = [];
 
     axios
-      .get(`https://mazglobal.co.uk/maz-api/addresses/${item.user_id}`, config)
+      .get(`http://95.111.240.143:8080/ecom-api/addresses/${item.user_id}`, config)
       .then(response => {
         var i = 0;
         setUserId(item.user_id);
@@ -751,7 +751,7 @@ const AddOrderPage = memo(props => {
 
       axios
         .post(
-          `https://mazglobal.co.uk/maz-api/orders`,
+          `http://95.111.240.143:8080/ecom-api/orders`,
           state,
 
           { headers: { 'content-type': 'application/json' } },

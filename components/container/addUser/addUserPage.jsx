@@ -3,11 +3,12 @@ import React, { memo } from 'react';
 //import { response } from "express";
 
 import { useState, useEffect } from 'react';
-
+import { ToggleGroupFormatter } from 'react-data-grid';
 import './adduser.scss';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import router from 'next/router';
 import { AirlineSeatIndividualSuite } from '@material-ui/icons';
+import jwt_decode from "jwt-decode";
 //import {toast} from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
 //toast.configure();
@@ -19,6 +20,8 @@ const AddUserPage = memo(props => {
     email: '',
     password: '',
     type: 'admin',
+    role_id:null,
+    supplier_id:null,
     phone: '',
     mobile: '',
     date_of_birth: '',
@@ -27,6 +30,8 @@ const AddUserPage = memo(props => {
   
   const [file, setFile] = useState();
   const [data, setData] = useState([]);
+  const [brand, setBrands] = useState([]);
+  const [role, setRoles] = useState([]);
   const [error, setError] = useState('');
   const [mydiv, setDiv] = useState(false);
 
@@ -35,6 +40,8 @@ const AddUserPage = memo(props => {
     last_name,
     email,
     password,
+    role_id,
+    supplier_id,
     phone,
     mobile,
     date_of_birth,
@@ -43,17 +50,45 @@ const AddUserPage = memo(props => {
   const toggle = () => setModal(!modal);
   const [errormodal, setErrorModal] = React.useState(false);
   const errortoggle = () => setErrorModal(!errormodal);
-  useEffect(() => {}, []);
+  const [user,setUser]=useState({})
+  useEffect(() => {
+
+    var decoded = jwt_decode(localStorage.getItem('token'))
+    setUser(decoded.result)
+   // https://api.perniacouture.pk/pernia-api
+   //http://localhost:8080/pernia-api
+    axios
+      .get(
+        `https://api.mazglobal.co.uk/maz-api/suppliers`)
+      .then(response => {
+        setBrands(response.data.data)
+        state.supplier_id=response.data.data[0].id
+      })
+      .catch(error => {console.log(error)});
+      axios
+      .get(
+        `https://api.mazglobal.co.uk/maz-api/roles`)
+      .then(response => {
+        setRoles(response.data.data)
+        state.role_id=response.data.data[0].id
+      })
+      .catch(error => {console.log(error)});
+
+  }, []);
 
   const submitHandler = e => {
     e.preventDefault();
     console.log(state);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    };
     axios
       .post(
-        `https://api.mazglobal.co.uk/maz-api/users/adminSignUp`,
-        state,
-
-        { headers: { 'content-type': 'application/json' } },
+        `https://api.mazglobal.co.uk/maz-api/users/adminSignup`,
+        state,config,
+        { },
       )
       .then(response => {
         toggle()
@@ -89,7 +124,40 @@ const AddUserPage = memo(props => {
     <div className="main">
       <div className="newUser">
         <h1 className="newUserTitle">Create User</h1>
-        <form  onSubmit={submitHandler}>
+        <form onSubmit={submitHandler}>
+          <div className="newUserItem">
+            <div className="form-group">
+              <label>User Type</label>
+              <select
+                className="form-control"
+                id="parent"
+                required
+                name="role_id"
+                onChange={handleChange('role_id')}
+              >
+                {role.map(it => (
+                  user.role_id==2 && it.id==1?<div></div>:
+                  <option value={it.id}>{it.role}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="newUserItem">
+            <div className="form-group">
+              <label>Brand</label>
+              <select
+                className="form-control"
+                id="parent"
+                required
+                name="supplier_id"
+                onChange={handleChange('supplier_id')}
+              >
+                {brand.map(it => (
+                  <option value={it.id}>{it.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
           <div className="newUserItem">
             <div className="form-group">
               <label>First name</label>
@@ -147,12 +215,7 @@ const AddUserPage = memo(props => {
                 className="form-control"
               />
             </div>
-            {mydiv &&
-            <div style={{color:'red'}}>
-              {error}
-              </div>
-
-            }
+            {mydiv && <div style={{ color: 'red' }}>{error}</div>}
           </div>
 
           <div className="newUserItem">
@@ -168,7 +231,6 @@ const AddUserPage = memo(props => {
                 className="form-control"
               />
             </div>
-         
           </div>
 
           <div className="newUserItem">
@@ -200,8 +262,6 @@ const AddUserPage = memo(props => {
             </div>
           </div>
 
-      
-
           <div className="newUserItem">
             <button type="submit" className="newUserButton">
               Create
@@ -209,7 +269,7 @@ const AddUserPage = memo(props => {
           </div>
         </form>
       </div>
-      
+
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Alert</ModalHeader>
         <ModalBody>
@@ -219,7 +279,6 @@ const AddUserPage = memo(props => {
           <Button color="primary" onClick={move}>
             OK
           </Button>
-          
         </ModalFooter>
       </Modal>
       <Modal isOpen={errormodal} toggle={errortoggle}>
@@ -231,7 +290,6 @@ const AddUserPage = memo(props => {
           <Button color="primary" onClick={errortoggle}>
             OK
           </Button>
-          
         </ModalFooter>
       </Modal>
     </div>

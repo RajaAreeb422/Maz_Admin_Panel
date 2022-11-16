@@ -51,13 +51,11 @@ function MainLayout(mainProps) {
   return (
     <>
       <NavBar {...props} />
-      <Container fluid className="wrapper" >
+      <Container fluid className="wrapper">
         <Row>
-          <div>
-          <Col className="wrapper-left" style={isWideNav}   >
+          <Col className="wrapper-left" style={isWideNav}>
             <NavLeft activeLink={activeLink} />
           </Col>
-          </div>
           <Col className="wrapper-content" style={isWideContent}>
             {children}
           </Col>

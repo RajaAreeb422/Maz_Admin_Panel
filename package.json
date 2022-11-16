@@ -1,18 +1,16 @@
 {
-  "name": "nextjs-reactstrap",
-  "description": "NextJS with Reactstrap Dashboard",
+  "name": "pernia",
+  "description": "Pernia",
   "keywords": [
-    "NextJS",
-    "ReactJS",
-    "Reactstrap"
+    "Pernia"
   ],
   "homepage": "https://github.com/dyarfi/nextjs-reactstrap",
   "version": "0.1.0",
   "private": false,
   "license": "Unlicense",
   "author": {
-    "name": "Defrian Yarfi",
-    "email": "dyarfi20@gmail.com",
+    "name": "Pernia",
+    "email": "pernia120@gmail.com",
     "url": "https://dyarfi.github.io/"
   },
   "contributors": [
@@ -32,10 +30,10 @@
     "@zeit/next-sass": "^1.0.1",
     "availity-reactstrap-validation": "^2.7.1",
     "axios": "^0.21.4",
-    "babel-plugin-react-transform": "^3.0.0",
     "bootstrap": "^4.6.1",
     "chart": "^0.1.2",
     "chart.js": "^3.7.0",
+    "cssnano": "^4.1.10",
     "dateformat": "^5.0.2",
     "filereader": "^0.10.3",
     "isomorphic-unfetch": "^3.1.0",
@@ -43,15 +41,15 @@
     "material-ui-search-bar": "^1.0.0",
     "next": "9.3.2",
     "next-redux-wrapper": "^5.0.0",
-    "node-fetch": "^3.2.6",
-    "node-sass": "^7.0.1",
+    "node-fetch": "^3.0.0",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-chartjs-2": "^4.0.1",
+    "react-data-grid": "^7.0.0-beta.7",
     "react-datepicker": "^4.5.0",
     "react-dom": "16.12.0",
     "react-fetch-hook": "^1.8.5",
-    "react-multi-select-component": "^4.2.9",
     "react-nextjs-toast": "^1.2.5",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.3.0",
@@ -60,7 +58,6 @@
     "react-toastify": "^8.0.3",
     "reactstrap": "^8.4.1",
     "redux": "^4.0.5",
-    "sass": "^1.52.3",
     "semantic-ui-react": "^2.0.4",
     "styled-components": "^5.3.3"
   },
@@ -71,11 +68,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/autoprefixer": "^9.0.0",
-    "@types/cssnano": "^5.1.0",
-    "autoprefixer": "9",
-    "cssnano": "^5.1.11",
-    "postcss": "^8.4.14",
     "prettier": "^1.19.1",
     "redux-devtools-extension": "^2.13.8"
   }

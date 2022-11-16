@@ -3,19 +3,20 @@ import React from 'react';
 // import propTypes from 'prop-types';
 
 /** components */
-import AddTagPage from './addTagPage';
+import AddTagPage from './AddTagPage';
 
 function AddTagContainer({ dispatch, storeLayout }) {
   const props = {
     dispatch,
-    storeLayout,
+    storeLayout
   };
-
+  //Takes to Product page in the same folder..
   return <AddTagPage {...props} />;
 }
 
-// DashboardContainer.propTypes = {
+// PostsContainer.propTypes = {
 //   isMobile: propTypes.bool.isRequired,
 // };
+
 
 export default AddTagContainer;

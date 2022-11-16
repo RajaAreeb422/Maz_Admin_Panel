@@ -7,6 +7,7 @@ import { DeleteOutline, EditOutlined } from '@material-ui/icons';
 import './shipper.scss';
 import useFetch from 'react-fetch-hook';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 const Data = memo(props => {
   const [modal, setModal] = React.useState(false);
@@ -14,12 +15,20 @@ const Data = memo(props => {
   const [valu, setValue] = useState('');
   const toggle = () => setModal(!modal);
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    let mounted = true;
-    console.log('in useeffec');
-    //get the shipper list from the database
+    var decoded = jwt_decode(localStorage.getItem('token'));
+    setUser(decoded.result)
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    };
+   
+    if(decoded.result.role_id==1)
+    {
     axios.get('https://api.mazglobal.co.uk/maz-api/shipping').then(response => {
       var i = 1;
       response.data.data.map(item => {
@@ -28,7 +37,18 @@ const Data = memo(props => {
       setData(response.data.data);
       setList(response.data.data);
     });
-
+  }
+  else{
+    axios.get(`https://api.mazglobal.co.uk/maz-api/shipping/byBrand/${decoded.result.supplier_id}`)
+    .then(response => {
+      var i = 1;
+      response.data.data.map(item => {
+        item['_id'] = i++;
+      });
+      setData(response.data.data);
+      setList(response.data.data);
+    });
+  }
     //return () => mounted = false;
   }, []);
 

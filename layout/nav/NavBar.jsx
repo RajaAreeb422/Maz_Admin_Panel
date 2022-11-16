@@ -14,13 +14,15 @@ import {
   DropdownItem,
   NavbarText,
 } from 'reactstrap';
-//import Image from "next/image";
 import { Avatar, Badge } from '@material-ui/core';
 import jwt_decode from "jwt-decode";
+import axios from 'axios'
 const NavBar = () => {
    const [user,setUser]=useState({
-     first_name:''
+    
    })
+   const [brand,setBrand]=useState({
+  })
 
   function deletetoken() {
     localStorage.removeItem('token');
@@ -29,22 +31,41 @@ const NavBar = () => {
   }
 
   useEffect(() => {
-  
    var decoded = jwt_decode(localStorage.getItem('token'));
    console.log('local',localStorage.getItem('token'))
    console.log('lres',decoded.result)
    setUser(decoded.result)
+   if(decoded.result.role_id==1)
+   {
+    
+   }
+   else{
+   axios
+   .get(
+     `https://api.mazglobal.co.uk/maz-api/suppliers/${decoded.result.supplier_id}`
+   )
+   .then(res => {
+     console.log("bb",res.data.data)
+     setBrand(res.data.data)
+   })
+   .catch(err => console.log(err));
+  }
 },[])
 
   return (
     <div>
-      {/* rgba(16, 103, 138, 0.933) */}
-      <Navbar  dark expand="sm" fixed="top" style={{backgroundImage:'linear-gradient(rgba(16, 103, 138, 0.933),black)'}}>
-      
-        <NavbarBrand href="/" style={{padding:'10px'}}>
-          <img src="/white_logo.png" height='80px' width="120px" style={{marginLeft:'80px'}}/>
-         
+      <Navbar color="dark" dark expand="sm" fixed="top">
+      {user.role_id==1 ?
+        <NavbarBrand href="/">
+          <img src="https://i.ibb.co/KbgwHtX/Pngtree-accessories-beautiful-scarf-6258565.png" style={{height:'35px',width:"70px"}} />
+          Pernia
         </NavbarBrand>
+        :
+        <NavbarBrand href="/">
+        <img src="https://i.ibb.co/KbgwHtX/Pngtree-accessories-beautiful-scarf-6258565.png" style={{height:'35px',width:"70px"}} />
+        {brand.name}
+      </NavbarBrand>
+      }
         <Collapse navbar>
           <Nav className="mr-auto" navbar>
             {/* <NavbarToggler onClick={toggle} color="dark" />
@@ -107,7 +128,7 @@ const NavBar = () => {
             </DropdownToggle>
             <DropdownMenu style={{marginLeft:"-30px"}}>
               <DropdownItem tag="div">
-                <NavLink href="/page/profile" className="text-dark">
+                <NavLink href="/page/profile" className="text-dark" >
                   <i className="fas fa-user"></i> Profile
                 </NavLink>
               </DropdownItem>

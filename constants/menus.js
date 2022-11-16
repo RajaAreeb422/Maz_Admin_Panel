@@ -29,14 +29,6 @@ const MENUS = [
     label: 'Orders',
     icon: "fab fa-first-order",
   },
-
-  {
-    name: 'Vehicles',
-    as: 'a',
-    href: '/vehicle/Vehicle',
-    label: 'Vehicles',
-    icon: "fas fa-car-alt",
-  },
   {
     name: 'Suppliers',
     as: 'a',
@@ -51,7 +43,7 @@ const MENUS = [
     href: '/shipSystem/Ship',
     label: 'Shippers',
     icon: 'fas fa-shipping-fast',
-  }
+  },
   // {
   //   name: 'Coupons',
   //   as: 'a',
@@ -59,13 +51,20 @@ const MENUS = [
   //   label: 'Coupons',
   //   icon: 'fas fa-gift',
   // },
-  // {
-  //   name: 'Tags',
-  //   as: 'a',
-  //   href: '/tag/tag',
-  //   label: 'Tags',
-  //   icon: 'fas fa-gift',
-  // }
+  {
+    name: 'Tags',
+    as: 'a',
+    href: '/tag/tag',
+    label: 'Tags',
+    icon: 'fas fa-tags',
+  },
+  {
+    name: 'Collections',
+    as: 'a',
+    href: '/collections/Collection',
+    label: 'Collections',
+    icon: 'fas fa-gift',
+  }
 ];
 
 

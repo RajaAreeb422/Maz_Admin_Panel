@@ -6,10 +6,12 @@ import { DeleteOutline, Edit } from '@material-ui/icons';
 import './order.scss';
 import useFetch from 'react-fetch-hook';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 const OrderPage = memo(props => {
 
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
   const [list, setList] = useState([]);
   const [valu, setValue] = useState('');
   const [id, setId] = useState(null);
@@ -17,6 +19,10 @@ const OrderPage = memo(props => {
   const toggle = () => setModal(!modal);
 
   useEffect(() => {
+    var decoded = jwt_decode(localStorage.getItem('token'));
+    console.log('local',localStorage.getItem('token'))
+    console.log('lres',decoded.result)
+    setUser(decoded.result)
     const config = {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -26,7 +32,7 @@ const OrderPage = memo(props => {
     console.log('in useeffec');
     //get list of orders from the database
     axios
-      .get('https://api.mazglobal.co.uk/maz-api/orders')
+      .get('http://localhost:8080/pernia-api/orders')
       .then(response => {
         console.log(response.data);
        
@@ -44,7 +50,7 @@ const OrderPage = memo(props => {
             //get the user name and other details from the database using user_id from order detail.
             axios
               .get(
-                `https://api.mazglobal.co.uk/maz-api/users/${exam.user_id}`,
+                `http://localhost:8080/pernia-api/users/${exam.user_id}`,
                 config,
               )
               .then(res => {
@@ -97,12 +103,12 @@ const OrderPage = memo(props => {
     };
     console.log('moveeeeeeeeeeeeeeeee', id);
     axios
-      .delete(`https://api.mazglobal.co.uk/maz-api/orders/${id}`, config)
+      .delete(`http://95.111.240.143:8080/ecom-api/orders/${id}`, config)
       .then(response => {
         console.log(response);
         toggle();
         axios
-          .get(`https://api.mazglobal.co.uk/maz-api/orders`, config)
+          .get(`http://95.111.240.143:8080/ecom-api/orders`, config)
           .then(res => {
             setData(res.data.data);
           })

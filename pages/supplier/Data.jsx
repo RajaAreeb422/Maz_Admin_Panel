@@ -8,7 +8,6 @@ import './supplier.scss';
 import useFetch from 'react-fetch-hook';
 import axios from 'axios';
 
-
 const Data = memo(props => {
   const [modal, setModal] = React.useState(false);
   const [id, setId] = useState(0);
@@ -54,11 +53,33 @@ const Data = memo(props => {
       setData(filteredRows);
     }
   };
+  const cnfrmDelete = id => {
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    };
+    console.log('id', id);
+    axios
+      .delete(`https://api.mazglobal.co.uk/maz-api/suppliers/${id}`, config)
+      .then(res => {
+        console.log(res.data.success);
+        setData(data.filter(item => item.id !== id));
+      })
+      .catch(err => console.log(err));
+      
+  };
+
 
   //generates the alert box
   const handleDelete = id => {
-    setId(id);
-    toggle();
+    if (confirm('Are you sure you want to delete this??????')) {
+      // Save it!
+      cnfrmDelete(id);
+    } else {
+      // Do nothing!
+      console.log('Thing was not saved to the database.');
+    }
   };
 
   //deletes the selected supplier from the database and creates new list

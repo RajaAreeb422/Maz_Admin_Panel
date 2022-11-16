@@ -22,12 +22,15 @@ toast.configure();
 const EditCatPage = memo(props => {
   const [modal, setModal] = React.useState(false);
   const [data, setData] = useState([]);
+  const [update, setUpdate] = useState(false);
+  const [img, setImg] = useState(null);
+  const [path, setPath] = useState();
   const [catgry, setCatgry] = useState([]);
   const [main, setMain] = useState([]);
   const [hasparent,setHasParent]=useState(false)
   const Name = data.name;
   const Parent = data.parent;
-  console.log('Parennnnt', data.parent);
+
   const Description = data.description;
   const [state, setState] = useState({
     name: Name,
@@ -50,19 +53,51 @@ const EditCatPage = memo(props => {
       },
     };
     console.log(state);
-    axios
+    if(img)
+    {
+      var formData = new FormData();
+        formData.append('imageFile', img);
+        console.log('image', img);
+        //    // go()
+        axios
+          .post(
+            `https://api.mazglobal.co.uk/maz-api/categories/uploadImage/${id}`,
+            formData,
+            config,
+            {},      
+          )
+          .then(res => {
+            console.log("after upload",res.data);
+          }).catch(err=>console.log(err))
+          //fs.unlinkSync(imagePath);
+          
+          // axios
+          // .delete(
+          //   `https://api.mazglobal.co.uk/images/${path}`,config,   
+          // )
+          // .then(res => {
+          //   console.log("after delte",res.data);
+           
+          // }).catch(err=>console.log(err))
+    }
+    if(update==true)
+    {
+      axios
       .put(`https://api.mazglobal.co.uk/maz-api/categories/${id}`, state,config)
       .then(response => {
         
-         toggle()
+        toggle()
       })
       .catch(error => {
         toast(' Category Added');
       });
+    }
+   
   };
 
   const handleChange = name => e => {
     //onClick={()=>addToast("success",{appearence:"success"})}
+    setUpdate(true)
     const name = e.target.name;
     const value = e.target.value;
     console.log('vvvvv', value);
@@ -88,6 +123,13 @@ const EditCatPage = memo(props => {
     }
 
   };
+  const handleImgChange = name => e => {
+    if (e.target.files && e.target.files[0]) {
+      let imgg = e.target.files[0];
+      
+      setImg(imgg);
+    }
+  };
   
   useEffect(() => {
     console.log('in useeffec');
@@ -107,6 +149,11 @@ const EditCatPage = memo(props => {
           console.log(id);
           console.log('data', response.data.data);
           setData(response.data.data);
+          setState(response.data.data)
+          let partition=response.data.data.path.split('/')
+          let fileName=partition[1]
+          setPath(fileName)
+
           if(response.data.data.parent!=null)
           {
             console.log('helo par',response.data.data.parent)
@@ -188,7 +235,36 @@ const EditCatPage = memo(props => {
                 </select>
               </div>
 }
-              <div className="descp">
+
+             <div className="userUpdateItem">
+              <label
+                for="exampleInputName"
+              >
+                Upload New Image
+              </label>
+              <input  
+                type="file"
+                id="name"
+                placeholder="Your Category Label"
+                name="imageFile"
+                accept='image/*'
+                onChange={handleImgChange(name)}
+              />
+            </div>
+            {!img?
+            <div className="userUpdateItem">
+              <label
+                for="exampleInputName"
+              >
+                Current Image</label>
+              <p
+                for="exampleInputName"
+              >
+                {path}
+              </p>
+              
+            </div>:<div></div>}
+              {/* <div className="descp">
                 <label>Category Description</label>
                 <input
                   type="text"
@@ -200,7 +276,7 @@ const EditCatPage = memo(props => {
                   value='dummy data'
                
                 />
-              </div>
+              </div> */}
 
               <button type="submit" className="userUpdateButton" >
                 Update

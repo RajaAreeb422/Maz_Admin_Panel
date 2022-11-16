@@ -4,9 +4,10 @@ import { DataGrid } from '@material-ui/data-grid';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Link from 'next/link';
 import { DeleteOutline, EditOutlined } from '@material-ui/icons';
-import './tag.scss';
+import './tag1.scss';
 import useFetch from 'react-fetch-hook';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 const TagPage = memo(props => {
   const [modal, setModal] = React.useState(false);
@@ -15,15 +16,20 @@ const TagPage = memo(props => {
   const [data, setData] = useState([]);
   const [valu, setValue] = useState('');
   const [list, setList] = useState([]);
+  const [user,setUser]=useState({
+  })
 
-  useEffect(() => {
-    let mounted = true;
-    console.log('in useeffec');
-    //get list of supplier from the datbase
+
+ useEffect(() => {
+  var decoded = jwt_decode(localStorage.getItem('token'));
+  console.log('local',localStorage.getItem('token'))
+  console.log('lres',decoded.result)
+  setUser(decoded.result)
+    
     axios
-      .get('http://localhost:8080/ecom-api/tag')
+      .get('https://api.mazglobal.co.uk/maz-api/tags')
       .then(response => {
-        if (mounted) {
+        
           var i = 1;
           response.data.data.map(exam => {
             exam['_id'] = i++;
@@ -31,7 +37,7 @@ const TagPage = memo(props => {
           }),
             setData(response.data.data);
           setList(response.data.data);
-        }
+      
         //console.log(response.data)
       });
 
@@ -69,12 +75,12 @@ const TagPage = memo(props => {
     };
 
     axios
-      .delete(`http://localhost:8080/ecom-api/tag/${id}`, config)
+      .delete(`https://api.mazglobal.co.uk/maz-api/tag/${id}`, config)
       .then(response => {
         console.log(response);
         toggle();
         axios
-          .get(`http://localhost:8080/ecom-api/tag`, config)
+          .get(`https://api.mazglobal.co.uk/maz-api/tag`, config)
           .then(res => {
             setData(res.data.data);
           })
@@ -88,7 +94,7 @@ const TagPage = memo(props => {
     { field: '_id', headerName: 'ID', width: 220 },
     //{ field: 'id', headerName: 'UID', with: 240 },
     { field: 'name', headerName: 'Name', width: 240 },
-    
+
    
     {
       field: 'action',
@@ -97,17 +103,20 @@ const TagPage = memo(props => {
       renderCell: params => {
         return (
           <>
+          {user.role_id==1?
+          <div>
             <Link
               href="../editSupplier/[id]"
               as={`/editSupplier/${params.row.id}`}
             >
-              <EditOutlined className="proEdit">Edit</EditOutlined>
+              <EditOutlined className="tag1Edit">Edit</EditOutlined>
             </Link>
 
             <DeleteOutline
-              className="proListDelete"
+              className="tag1ListDelete"
               onClick={() => handleDelete(params.row.id)}
             />
+            </div>:<div></div>}
           </>
         );
       },
@@ -115,15 +124,17 @@ const TagPage = memo(props => {
   ];
 
   return (
-    <div className="tagList">
+    <div className="tag1List">
       <h1>Tags</h1>
      
      {/* Link to Add Supplier Page */}
-      <Link href="/addTag/AddTag">
+     {user.role_id==1?
+      <Link href="../addtag/addtag">
         <a>
-          <button className="tagAddButton">Add Tag</button>
+          <button className="tag1AddButton">Add Tag</button>
         </a>
-      </Link>
+      </Link>:<div></div>
+}
        
        {/* Search Bar */}
       <input
@@ -148,7 +159,7 @@ const TagPage = memo(props => {
         checkboxSelection
       />
 
-      <div className="tagbtnclass"></div>
+      <div className="tag1btnclass"></div>
       {/* Alert Box Code */}
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Alert</ModalHeader>

@@ -38,7 +38,7 @@ const AddVehiclePage = memo(props => {
       },
     };
     axios
-      .get(`https://api.mazglobal.co.uk/maz-api/vehicles`, config)
+      .get(`http://localhost:8080/maz-api/vehicles`, config)
       .then(response => {
         setParent(response.data.data);
 
@@ -66,7 +66,7 @@ const AddVehiclePage = memo(props => {
     console.log('state',state)
     axios
       .post(
-        `https://api.mazglobal.co.uk/maz-api/vehicles`,
+        `https://mazglobal.co.uk/maz-api/vehicles`,
         state,
         config,
 

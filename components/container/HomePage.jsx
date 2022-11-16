@@ -40,7 +40,7 @@ const HomePage = (props) => {
   const [activeNav, setActiveNav] = React.useState(1);
   const [chartExample1Data, setChartExample1Data] = React.useState("data1");
   const [data,setData] = useState({
-    labels: ['Jan','Feb','March','April'],
+    labels: [],
     datasets: [
       {
         label: 'Month Data',
@@ -61,7 +61,7 @@ const HomePage = (props) => {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: [4,9,22,56]
+        data: []
       }
     ]
   });
@@ -127,70 +127,70 @@ const HomePage = (props) => {
       },
     };
     //getting categories from database..
-    // let list=data
-    // axios
-    //   .get('http://95.111.240.143:8080/ecom-api/orders/month/month', config)
-    //   .then(response => {
+    let list=data
+    axios
+      .get('http://95.111.240.143:8080/ecom-api/orders/month/month', config)
+      .then(response => {
         
-    //     response.data.data.map((exam,i) => {
-    //       let count=1
-    //       let status=false
-    //       let date=''
-    //       const d = new Date(exam.date);
-    //       let dd=d.toString()
-    //       for(let i=0; i<15;i++)
-    //           date=date+dd[i]
-    //           exam.date= date
-    //       exam['date']=date
-    //       for(let j=0;j<i;j++)
-    //       {
+        response.data.data.map((exam,i) => {
+          let count=1
+          let status=false
+          let date=''
+          const d = new Date(exam.date);
+          let dd=d.toString()
+          for(let i=0; i<15;i++)
+              date=date+dd[i]
+              exam.date= date
+          exam['date']=date
+          for(let j=0;j<i;j++)
+          {
            
-    //         if(response.data.data[j].date==date)
-    //         {
+            if(response.data.data[j].date==date)
+            {
             
-    //           list.datasets[0].data[j]=list.datasets[0].data[j]+1
-    //           status=true
+              list.datasets[0].data[j]=list.datasets[0].data[j]+1
+              status=true
            
-    //         }
-    //       }
+            }
+          }
            
           
-    //    if(status==false)
-    //    {
-    //     list.labels.push(date)
-    //     list.datasets[0].data.push(count) 
-    //    }
+       if(status==false)
+       {
+        list.labels.push(date)
+        list.datasets[0].data.push(count) 
+       }
 
        
 
-    //     })
+        })
         
-    //     setData(list)
-    //     setData1(list)
-      // }).catch(err=>console.log(err));
+        setData(list)
+        setData1(list)
+      }).catch(err=>console.log(err));
 
-      // axios
-      // .get('http://95.111.240.143:8080/ecom-api/orders/month/currentWeek', config)
-      // .then(res => {
-      //   let list1=data2
-      //   res.data.data.map(ex => {
-      //     let date=''
-      //     const d = new Date(ex.date);
-      //     let dd=d.toString()
-      //     for(let i=0; i<15;i++)
-      //         date=date+dd[i]
-      //         ex.date= date
-      //     ex['date']=date
+      axios
+      .get('http://95.111.240.143:8080/ecom-api/orders/month/currentWeek', config)
+      .then(res => {
+        let list1=data2
+        res.data.data.map(ex => {
+          let date=''
+          const d = new Date(ex.date);
+          let dd=d.toString()
+          for(let i=0; i<15;i++)
+              date=date+dd[i]
+              ex.date= date
+          ex['date']=date
            
-      //     list1.labels.push(date)
+          list1.labels.push(date)
        
-      //   list1.datasets[0].data.push(ex.total_items) 
+        list1.datasets[0].data.push(ex.total_items) 
 
-      //   })
+        })
         
-      //   setData2(list1)
-      // }).catch(err=>console.log(err));
-    
+        setData2(list1)
+      }).catch(err=>console.log(err));
+    //return () => mounted = false;
   }, []);
 
 
@@ -233,19 +233,18 @@ const HomePage = (props) => {
     if(index==1)
     {
       
-    // setData(data1)
-    setData(data)
+    setData(data1)
     }
     else
     {
-    // setData(data2)
+    setData(data2)
     }
   };
   return (
     <>
       {/* <Header /> */}
       {/* Page content */}
-      <Container className="mt--7" fluid style={{marginTop:'60px'}}>
+      <Container className="mt--7" fluid>
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="shadow">

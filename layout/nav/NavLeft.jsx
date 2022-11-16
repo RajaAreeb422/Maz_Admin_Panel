@@ -8,87 +8,62 @@ import {
   UncontrolledCollapse,
 } from 'reactstrap';
 
+import { useState,useEffect } from 'react';
 import { MENUS, SUBMENUS } from '../../constants/menus';
-
+import jwt_decode from "jwt-decode";
 function NavLeft(props) {
   const { activeLink } = props;
+  const [user,setUser]=useState({
+  })
+ useEffect(() => {
+  var decoded = jwt_decode(localStorage.getItem('token'));
+  console.log('local',localStorage.getItem('token'))
+  console.log('lres',decoded.result)
+  setUser(decoded.result)
+},[])
+
   return (
-    <div style={{marginTop:'60px'}}>
+    <>
       <h4 className="headline">Components</h4>
       <div className="wrapper-list-group">
         <ListGroup flush className="list-group-nav-left" tag="div">
           {MENUS.map((item, k) => {
             const isActive = activeLink === item.name ? true : false;
             return (
+              <>
+              {user.role_id==1?
               <ListGroupItem
                 key={`l${k}`}
                 active={isActive}
                 tag={item.as}
                 href={item.href}
               >
-                {item.icon && <i className={item.icon} style={{textDecoration:'none',color:'rgba(16, 103, 138, 0.933)'}}></i>} {item.label}
+                {item.icon && <i className={item.icon}></i>} {item.label}
+              </ListGroupItem>:
+              <>
+              {item.label.toLowerCase()=='users' || item.label.toLowerCase()=='suppliers'
+               || item.label.toLowerCase()=='coupons' ?
+              <div>
+
+              </div>:
+              <ListGroupItem
+                key={`l${k}`}
+                active={isActive}
+                tag={item.as}
+                href={item.href}
+              >
+                {item.icon && <i className={item.icon}></i>} {item.label}
               </ListGroupItem>
+          }
+              </>
+              }
+              </>
             );
           })}
         </ListGroup>
       </div>
-      </div>
-      /* <h4 className="headline">UI Elements</h4>
-      <div className="wrapper-list-group"> */
-        /* <ListGroup flush className="list-group-nav-left" tag="div">
-          // {SUBMENUS.map((subItem, k) => {
-          //   const isActive = activeLink === subItem.name ? true : false;
-          //   const activeMenus = activeLink && activeLink.split('.');
-            return (
-              (!subItem.subLinks && (
-                <ListGroupItem
-                  key={`k${k}`}
-                  active={isActive}
-                  tag={subItem.as}
-                  href={subItem.href}
-                >
-                  // {subItem.icon && <i className={subItem.icon}></i>}&nbsp;
-                  // {subItem.label}
-                </ListGroupItem>
-              )) || (
-                <ListGroupItem
-                  // key={`ks${k}`}
-                  tag="div"
-                  /* active={activeMenus[0] ? true : false} */
-              //</ListGroup>  >
-        //           <a
-        //             href={subItem.href}
-        //             className="dropdown-toggle"
-        //             id={`toggleCollapser-${k}`}
-        //           >
-        //             {subItem.icon && <i className={subItem.icon}></i>}&nbsp;
-        //             {subItem.label}
-        //           </a>
-        //           <UncontrolledCollapse
-        //             toggler={`toggleCollapser-${k}`}
-        //             // isOpen={activeMenus[1] ? true : false}
-        //           >
-        //             <Nav vertical className="mt-2">
-        //               {subItem.subLinks.map((subs, l) => {
-        //                 const isSubActive =
-        //                   activeMenus && activeMenus[1] === subs.name
-        //                     ? true
-        //                     : false;
-
-        //                 return (
-        //                   <NavItem key={`l${l}`} active={isSubActive === true}>
-        //                     <NavLink href={subs.href}>{subs.label}</NavLink>
-        //                   </NavItem>
-        //                 );
-        //               })}
-        //             </Nav>
-        //           </UncontrolledCollapse>
-        //         </ListGroupItem>
-        //       )
-        //     );
-        //   })}
-        // </ListGroup> */}
-     // </div>
+      </>
+      
     
   );
 }

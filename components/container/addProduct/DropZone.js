@@ -189,8 +189,8 @@ const DropZone = props => {
               type="file"
               className="hideupload"
               id="file"
-               accept=".PNG"
-               accept=".jpg"
+               accept="image/*"
+              
               // placeholder="Select Image"
               // required
               name="imageFile"

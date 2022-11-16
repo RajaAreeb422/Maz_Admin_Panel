@@ -69,7 +69,7 @@ const EditVariants = props => {
     };
     console.log(config);
     axios
-      .get(`https://api.mazglobal.co.uk/maz-api/products/variants`)
+      .get(`https://perniacouture.pk/pernia-api/products/variants`)
       .then(response => {
         setState(response.data.data);
         setData(props.variants);

@@ -55,31 +55,6 @@ const VehiclePage = memo(props => {
             exam['_id'] = i++;
           })
           
-          //   let pp = 'http://95.111.240.143/ecom-api/' + exam.path;
-          //   pp=pp.toString();
-          //   exam['path']=pp
-          //   console.log("ppp",pp)
-            
-          //   setPath(pp)
-          //   if (exam.parent) {
-              
-          //     response.data.data.map(p_v => {
-          //       if (exam.parent == p_v.id) {
-          //         exam['parent_name'] = p_v.name;
-                 
-                  
-          //       }
-          //     });
-          //   } else {
-          //     exam['parent_name'] = 'null';
-          //   }
-
-          //   switchstate['switch-' + exam.id] = exam.status;
-          //   activelist[exam.id]={
-          //     id:exam.id,
-          //     status:exam.status
-          //   }
-          // }),
          
           setData(response.data.data);
           setList(response.data.data)
@@ -103,17 +78,17 @@ const VehiclePage = memo(props => {
     };
     console.log('moveeeeeeeeeeeeeeeee', id);
     axios
-    .delete(`https://api.mazglobal.co.uk/maz-api/categories/${id}`)
+    .delete(`http://95.111.240.143:8080/ecom-api/categories/${id}`)
       .then(response => {
        
         toggle();
         axios
-          .get(`https://api.mazglobal.co.uk/maz-api/categories`, config)
+          .get(`http://95.111.240.143:8080/ecom-api/categories`, config)
           .then(res => {
             var i=1
             res.data.data.map(exam => {
               exam['_id'] = i++;
-              let pp = 'https://api.mazglobal.co.uk/' + exam.path;
+              let pp = 'http://95.111.240.143/ecom-api/' + exam.path;
               pp=pp.toString();
               exam['path']=pp
               console.log("ppp",pp)
@@ -188,7 +163,7 @@ const VehiclePage = memo(props => {
     })
     setSactive(newlist)
     axios
-      .put(`https://api.mazglobal.co.uk/maz-api/categories/${id}`, {
+      .put(`http://95.111.240.143:8080/ecom-api/categories/${id}`, {
         status: status == false ? 0 : 1,
       })
       .then(response => {
