@@ -3,7 +3,7 @@ import React from 'react';
 // import propTypes from 'prop-types';
 
 /** components */
-import AddTagPage from './AddTagPage';
+import AddTagPage from './addTagPage';
 
 function AddTagContainer({ dispatch, storeLayout }) {
   const props = {
